@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "326988981936",
+    "project_id": "waffir-42532",
+    "storage_bucket": "waffir-42532.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326988981936:android:bd2f0d1ba07a13320d7d75",
+        "android_client_info": {
+          "package_name": "com.waffir.waffir"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX74QwCkhil48y7IE2G-DKzH_PZ0dicm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
