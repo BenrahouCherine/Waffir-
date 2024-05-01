@@ -17,10 +17,6 @@ if (flutterVersionCode == null) {
     flutterVersionCode = '1'
 }
 
-
-apply plugin: "com.google.gms.google-services"
-
-
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'

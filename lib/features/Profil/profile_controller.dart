@@ -1,70 +1,83 @@
+// ignore_for_file: avoid_print
 
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'package:waffir/features/Profil/models/user.dart';
 
-class ProfileController extends GetxController{
+class ProfileController extends GetxController {
   @override
   void onInit() {
     getUser();
     super.onInit();
+    ever(user, (_) {
+      log(user.value.toString());
+      update();
+    });
   }
-  String userFetchedFirst="";
-  String? validated="Non-verified";
-  String? userFetchedLast;
-  String? userNature;
-  String? phone;
-  String? userFetched;
-  String? photo_URL;
+
+  Rx<UserModel> user = UserModel(
+    uid: '',
+    username: '',
+    firstName: '',
+    lastName: '',
+    userNature: '',
+    phone: '',
+  ).obs;
   RxBool userLoading = true.obs;
-  Rx<XFile> profilePicture = XFile('').obs;
+  Rx<XFile?> profilePicture = XFile('').obs;
 
-  FirebaseAuth auth=FirebaseAuth.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-   FirebaseStorage _storage = FirebaseStorage.instance;
-
+  FirebaseStorage storage = FirebaseStorage.instance;
 
   getUser() {
     userLoading.value = true;
     final currentUser = auth.currentUser;
     CollectionReference users = firestore.collection('userDetail');
 
-    users.where('uid',isEqualTo: currentUser?.uid.toString()).get()
+    users
+        .where('uid', isEqualTo: currentUser?.uid.toString())
+        .get()
         .then((QuerySnapshot snapshot) {
-      snapshot.docs.forEach((doc) {
-        userNature=doc["userNature"];
-        userFetchedFirst=doc["firstname"];
-        userFetchedLast=doc["lastname"];
-         phone=doc["phone"];
-        userFetched=doc["username"];
-        photo_URL = doc['photo_URL'];
-
-        print('userFetched is equal to ');
-
+      if (snapshot.docs.isNotEmpty) {
+        var doc = snapshot.docs.first;
+        user.value = UserModel.fromQueryDocumentSnapshot(doc);
+        log(user.value.toString());
         update();
-      });
-    })
-        .catchError((error) => print("Failed to fetch users: $error"));
-    print('userFetched is  ');
+      }
+    }).catchError((error) => log("Failed to fetch users: $error"));
     update();
     userLoading.value = false;
-
   }
 
-
-  Future<void> modifyUser() async {
+  Future<void> setProfilePic() async {
+    userLoading.value = true;
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference reference = _storage.ref().child('profilePictures/$fileName');
+    Reference reference = storage.ref().child('profilePictures/$fileName');
     UploadTask uploadTask = reference.putFile(
-      File(profilePicture.value.path),
+      File(profilePicture.value!.path),
     );
     TaskSnapshot storageTaskSnapshot = await uploadTask;
     String photoURL = await storageTaskSnapshot.ref.getDownloadURL();
+    // modify collection and add photo_URL
+    CollectionReference users = firestore.collection('userDetail');
+    final currentUser = auth.currentUser;
+    users
+        .where('uid', isEqualTo: currentUser?.uid.toString())
+        .get()
+        .then((QuerySnapshot snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        var doc = snapshot.docs.first;
+        doc.reference.update({'photo_URL': photoURL});
+      }
+      getUser();
+      userLoading.value = false;
+    }).catchError((error) => print("Failed to fetch users: $error"));
   }
-//test@gmail.com azert1234
-
 }

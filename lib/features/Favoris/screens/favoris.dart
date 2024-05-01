@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
@@ -16,31 +15,31 @@ class favoris extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      backgroundColor: TColors.primary,
-     appBar:TAppBar(
-    title: Text('Favoris' , style: Theme.of(context).textTheme.headlineMedium,),
-actions:  [
-  CircularIcon(icon: Iconsax.add , onPressed: () => Get.to( const DecScreen()),)
-],
-
-
-     ),
-     body: SingleChildScrollView(
-
-      child : Padding(
-        
-        padding: const EdgeInsets.all(TSizes.defaultSpace
-      ),
-
-      child: Column(
-        children: [
-          GridViewVertical(itemCount: 4, itemBuilder: (_, index) =>const ProductCardVertical()),
-
-        ],
-      ),
-     ) ,
-     )
-    );
+    return Scaffold(
+        backgroundColor: TColors.primary,
+        appBar: TAppBar(
+          title: Text(
+            'Favoris',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          actions: [
+            CircularIcon(
+              icon: Iconsax.add,
+              onPressed: () => Get.to(() => const DecScreen()),
+            )
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(TSizes.defaultSpace),
+            child: Column(
+              children: [
+                GridViewVertical(
+                    itemCount: 4,
+                    itemBuilder: (_, index) => const ProductCardVertical()),
+              ],
+            ),
+          ),
+        ));
   }
 }
