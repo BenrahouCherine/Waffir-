@@ -90,24 +90,19 @@ class LoginScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: TSizes.spaceBtwInputFields / 2),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                Checkbox(value: true, onChanged: (value) {}),
-                                const Text(TTexts.rememberMe),
-                              ],
-                            ),
-                            TextButton(
-                              onPressed: () => Get.to(() => forgetPassword()),
-                              child: const Text(
-                                TTexts.forgetPassword,
-                                style: TextStyle(
-                                    color: Color.fromARGB(210, 255, 255,
-                                        255)), // Remplacez `Colors.red` par la couleur de votre choix
-                              ),
-                            )
+                            Checkbox(value: true, onChanged: (value) {}),
+                            const Text(TTexts.rememberMe),
                           ],
+                        ),
+                        TextButton(
+                          onPressed: () => Get.to(() => forgetPassword()),
+                          child: const Text(
+                            TTexts.forgetPassword,
+                            style: TextStyle(
+                                color: Color.fromARGB(210, 255, 255,
+                                    255)), // Remplacez `Colors.red` par la couleur de votre choix
+                          ),
                         ),
                         const SizedBox(height: TSizes.spaceBtwSections),
                         SizedBox(

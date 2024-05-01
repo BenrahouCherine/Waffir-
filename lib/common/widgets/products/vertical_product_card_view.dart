@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -8,6 +10,7 @@ import 'package:waffir/common/widgets/image_text_widget/product_price.dart';
 import 'package:waffir/common/widgets/image_text_widget/roundImage.dart';
 import 'package:waffir/common/widgets/texts/brand_text/TBrandTitleTEXT2.dart';
 import 'package:waffir/common/widgets/texts/product_title_text.dart';
+import 'package:waffir/features/Favoris/controllers/fav_controller.dart';
 import 'package:waffir/features/addProduct/model/product.dart';
 import 'package:waffir/features/cart/controllers/cart_controller.dart';
 import 'package:waffir/utils/constants/colors.dart';
@@ -19,6 +22,7 @@ class VerticalProductCardView extends StatelessWidget {
   final ProductModel product;
 
   final cartController = Get.put(CartController());
+  final favController = Get.put(FavController());
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +50,26 @@ class VerticalProductCardView extends StatelessWidget {
                     applyImageRadius: true,
                     fit: BoxFit.cover,
                   ),
-                  const Positioned(
+                  Obx(
+                    () => Positioned(
                       top: 0,
                       right: 0,
-                      child:
-                          CircularIcon(icon: Iconsax.heart5, color: Colors.red))
+                      child: CircularIcon(
+                        icon: favController.favProducts.contains(product)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: Colors.red,
+                        onPressed: () {
+                          log(favController.favProducts.length);
+                          if (favController.favProducts.contains(product)) {
+                            favController.removeFavProduct(product);
+                          } else {
+                            favController.addFavProduct(product);
+                          }
+                        },
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

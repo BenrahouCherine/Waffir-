@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waffir/common/styles/shadow.dart';
-import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/Vendeurs/controllers/vendor_products_controller.dart';
+import 'package:waffir/features/Nos_Vendeurs/Vendeurs/controllers/vendor_products_controller.dart';
 import 'package:waffir/utils/constants/colors.dart';
 
 class Vend extends StatelessWidget {

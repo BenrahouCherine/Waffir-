@@ -1,0 +1,9 @@
+- [ ] auth with google
+- [ ] forgot password
+- [ ] check user registration
+- [ ] fix navbars
+- [ ] seller page
+- [ ] see if there is other bugs
+- [ ] voir tout
+- [ ] vendors page
+- [ ] products page

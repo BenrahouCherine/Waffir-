@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:waffir/features/Favoris/controllers/fav_controller.dart';
+import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/nos_vendeurs/controller/discover_vendors.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/features/authentification/screens/login/login.dart';
 import 'package:waffir/features/authentification/screens/onboarding/onboarding.dart';
@@ -22,12 +24,14 @@ class _EntryPageState extends State<EntryPage> {
   @override
   void initState() {
     isIntroShown = box.read('isIntroShown') ?? false;
+    Get.put(ProfileController());
+    Get.put(FavController());
+    Get.put(DiscoverVendorsController());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ProfileController());
     return StreamBuilder<User?>(
       stream: _auth.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
