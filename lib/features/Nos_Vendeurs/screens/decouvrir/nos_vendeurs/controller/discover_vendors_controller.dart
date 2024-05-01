@@ -5,6 +5,7 @@ import 'package:waffir/features/Profil/models/user.dart';
 
 class DiscoverVendorsController extends GetxController {
   RxList<UserModel> vendors = <UserModel>[].obs;
+  RxInt productsCount = 0.obs;
   RxBool isLoading = false.obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;

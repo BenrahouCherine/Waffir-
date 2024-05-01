@@ -7,3 +7,8 @@
 - [ ] voir tout
 - [ ] vendors page
 - [ ] products page
+- [ ] update products when i add a new one as a selelr
+- [ ] modify product + delete
+- list vendors
+- auth google
+- [ ] add localization + map
