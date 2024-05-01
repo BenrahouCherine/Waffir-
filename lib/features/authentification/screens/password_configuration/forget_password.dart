@@ -13,14 +13,14 @@ import 'package:waffir/utils/constants/text_strings.dart';
 class forgetPassword extends StatelessWidget {
   forgetPassword({super.key});
 
-  @override
   final _emailController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: TColors.primary,
       appBar: AppBar(),
       body: Padding(
-          padding: EdgeInsets.all(TSizes.defaultSpace),
+          padding: const EdgeInsets.all(TSizes.defaultSpace),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -68,7 +68,7 @@ class forgetPassword extends StatelessWidget {
       Get.offAll(() => const ResetPassword());
     } on FirebaseAuthException catch (e) {
       print(e);
-      Fluttertoast.showToast(msg: e.message! + '');
+      Fluttertoast.showToast(msg: e.message!);
     }
   }
 }

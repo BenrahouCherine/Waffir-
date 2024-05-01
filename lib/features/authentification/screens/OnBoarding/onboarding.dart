@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
-import 'package:waffir/features/authentification/controlers/onboarding_controller.dart';
-import 'package:waffir/features/authentification/screens/OnBoarding/widgets/Onboarding_Next.dart';
-import 'package:waffir/features/authentification/screens/OnBoarding/widgets/Onboarding_dot.dart';
-import 'package:waffir/features/authentification/screens/OnBoarding/widgets/onboarding_page.dart';
-import 'package:waffir/features/authentification/screens/OnBoarding/widgets/onboarding_skip.dart';
+import 'package:waffir/features/authentification/controllers/onboarding_controller.dart';
+import 'package:waffir/features/authentification/screens/onboarding/widgets/Onboarding_Next.dart';
+import 'package:waffir/features/authentification/screens/onboarding/widgets/Onboarding_dot.dart';
+import 'package:waffir/features/authentification/screens/onboarding/widgets/onboarding_page.dart';
+import 'package:waffir/features/authentification/screens/onboarding/widgets/onboarding_skip.dart';
 import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/image_strings.dart';
 import 'package:waffir/utils/constants/text_strings.dart';

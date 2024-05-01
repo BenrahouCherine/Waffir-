@@ -25,7 +25,7 @@ class favoris extends StatelessWidget {
           actions: [
             CircularIcon(
               icon: Iconsax.add,
-              onPressed: () => Get.to(() => const DecScreen()),
+              onPressed: () => Get.to(() => DecScreen()),
             )
           ],
         ),

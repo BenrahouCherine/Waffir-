@@ -78,6 +78,6 @@ class ProfileController extends GetxController {
       }
       getUser();
       userLoading.value = false;
-    }).catchError((error) => print("Failed to fetch users: $error"));
+    }).catchError((error) => log("Failed to fetch users: $error"));
   }
 }

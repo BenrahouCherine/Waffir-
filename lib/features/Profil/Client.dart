@@ -8,7 +8,7 @@ import 'package:waffir/common/widgets/appbar/app_bar.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/utils/constants/colors.dart';
 
-import '../authentification/screens/logindart/login.dart';
+import '../authentification/screens/login/login.dart';
 import 'Geolocalisation.dart';
 import 'ModifyUserScreen.dart';
 

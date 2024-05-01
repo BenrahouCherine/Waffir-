@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class TColors {
   TColors._();
@@ -7,18 +6,15 @@ class TColors {
   static const Color primary = Color(0xff0b612d);
   static const Color secondary = Color(0xFFF2AE1C);
   static const Color accent = Color(0xFFFFEDC7);
- 
+
   static const Gradient linerGradient = LinearGradient(
-    begin:Alignment(0.0, 0.0),
-    end:Alignment(0.707, -0.707),
-    colors: [
-      Color(0xff0b612d),
-      Color(0xFFF2AE1C),
-      Color(0xFFFFEDC7),
-    
-    ]
-    
-    );
+      begin: Alignment(0.0, 0.0),
+      end: Alignment(0.707, -0.707),
+      colors: [
+        Color(0xff0b612d),
+        Color(0xFFF2AE1C),
+        Color(0xFFFFEDC7),
+      ]);
 
   // Text colors
   static const Color textPrimary = Color(0xFF333333);
@@ -57,8 +53,4 @@ class TColors {
   static const Color softGrey = Color(0xFFF4F4F4);
   static const Color lightGrey = Color(0xFFF9F9F9);
   static const Color white = Color(0xFFFFFFFF);
-
 }
-
-
-

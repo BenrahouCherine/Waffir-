@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,7 @@ import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/sizes.dart';
 import 'package:waffir/utils/constants/text_strings.dart';
 
-import '../authentification/screens/logindart/login.dart';
+import '../authentification/screens/login/login.dart';
 
 class ModifyUserScreen extends StatefulWidget {
   const ModifyUserScreen({super.key});
@@ -137,26 +139,24 @@ class _CreateAccountState extends State<ModifyUserScreen> {
       'lastname': lastname,
       'phone': phone,
     };
-    print('entry request of');
+    log('entry request of');
     CollectionReference collectionReference =
         FirebaseFirestore.instance.collection('userDetail');
-    print('mid request of');
-    print(firstname);
-    print(username);
-    print(phone);
+    log('mid request of');
+    log(firstname);
+    log(username);
+    log(phone);
     collectionReference.doc(username).update(userDetail).then(
-        (value) => print('succesfully modify'),
-        onError: (e) => print("error type $e"));
-    print('back request of');
-    print(collectionReference);
-    print(userDetail);
+        (value) => log('succesfully modify'),
+        onError: (e) => log("error type $e"));
+    log('back request of');
     _showDialogAlert(context);
   }
 
   void _showDialogAlert(BuildContext Context) {
     showDialog(
         context: context,
-        builder: (BuildContext) {
+        builder: (context) {
           return AlertDialog(
             backgroundColor: Colors.amberAccent,
             title: const Text('Modify State Alert'),

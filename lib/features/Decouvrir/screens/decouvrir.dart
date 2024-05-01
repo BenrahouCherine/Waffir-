@@ -1,21 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:get/get.dart';
 import 'package:waffir/common/widgets/appbar/app_bar.dart';
 import 'package:waffir/common/widgets/custom_shapes/curved_edges/curved_edges.dart';
 import 'package:waffir/common/widgets/layouts/grid_layout.dart';
-import 'package:waffir/common/widgets/products/product_card_vertical.dart';
+import 'package:waffir/common/widgets/products/vertical_product_card_view.dart';
 import 'package:waffir/common/widgets/texts/section_heading.dart';
+import 'package:waffir/features/addProduct/screens/AddProduct.dart';
+import 'package:waffir/features/decouvrir/controllers/decouvrir_controller.dart';
 import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/sizes.dart';
 import 'package:waffir/utils/constants/text_strings.dart';
 
 class DecScreen extends StatelessWidget {
-  const DecScreen({super.key});
+  DecScreen({super.key});
+
+  final decouvrirController = Get.put(DecouvrirController());
 
   @override
   Widget build(BuildContext context) {
-    int count = 0;
     fetchUsers();
     return Scaffold(
         body: SingleChildScrollView(
@@ -60,7 +63,6 @@ class DecScreen extends StatelessWidget {
                           ),
                           actions: [
                             puceNotif(
-                              onPressed: () {},
                               iconColor: TColors.white,
                             )
                           ],
@@ -84,10 +86,11 @@ class DecScreen extends StatelessWidget {
                 height: TSizes.spaceBtwSections,
               ),
 
-              GridViewVertical(
-                itemCount: 2,
-                itemBuilder: (_, index) => const ProductCardVertical(),
-              ),
+              Obx(() => GridViewVertical(
+                    itemCount: decouvrirController.products.length,
+                    itemBuilder: (_, index) => VerticalProductCardView(
+                        product: decouvrirController.products[index]),
+                  ))
 //const ProductCardVertical()
             ],
           ),
@@ -115,42 +118,6 @@ class THomeCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     throw UnimplementedError();
-  }
-}
-
-class puceNotif extends StatelessWidget {
-  const puceNotif(
-      {super.key, required this.onPressed, required this.iconColor});
-  final VoidCallback onPressed;
-  final Color iconColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Iconsax.shopping_bag,
-              color: TColors.white,
-            )),
-        Positioned(
-          right: 0,
-          child: Container(
-              width: 18,
-              height: 18,
-              decoration: BoxDecoration(
-                  color: TColors.black,
-                  borderRadius: BorderRadius.circular(100)),
-              child: Center(
-                  child: Text('',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelLarge!
-                          .apply(color: TColors.white, fontSizeFactor: 0.8)))),
-        )
-      ],
-    );
   }
 }
 

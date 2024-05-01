@@ -3,10 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waffir/common/widgets/appbar/app_bar.dart';
-import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/utils/constants/colors.dart';
 
-import '../authentification/screens/logindart/login.dart';
+import '../authentification/screens/login/login.dart';
 import 'ModifyUserScreen.dart';
 
 class ProfileCompletionCard {
@@ -26,8 +25,6 @@ class GeolocalisationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ProfileController profileController = Get.find();
-
     return Scaffold(
       backgroundColor: TColors.primary,
       appBar: TAppBar(
@@ -36,18 +33,12 @@ class GeolocalisationScreen extends StatelessWidget {
                   .textTheme
                   .headlineMedium!
                   .apply(color: TColors.white)),
-          actions: [
+          actions: const [
             IconButton(
               onPressed: _signOut,
-              icon: const Icon(Icons.logout_rounded),
+              icon: Icon(Icons.logout_rounded),
             )
-          ]
-
-          /**actions:[
-            puceNotif(onPressed: () {}, iconColor: TColors.white, )
-
-            ]**/
-          ),
+          ]),
     );
   }
 }
@@ -55,7 +46,7 @@ class GeolocalisationScreen extends StatelessWidget {
 class CustomListTile {
   final IconData icon;
   final String title;
-  final function;
+  final Future function;
   CustomListTile({
     required this.icon,
     required this.title,
@@ -82,7 +73,7 @@ List<CustomListTile> customListTiles = [
 ];
 
 _LocationTaped() {
-  Get.to(() => GeolocalisationScreen());
+  Get.to(() => const GeolocalisationScreen());
 }
 
 Future<void> _signOut() async {
@@ -96,5 +87,5 @@ _logout() {
 }
 
 _ModifyTaped() {
-  Get.to(() => ModifyUserScreen());
+  Get.to(() => const ModifyUserScreen());
 }

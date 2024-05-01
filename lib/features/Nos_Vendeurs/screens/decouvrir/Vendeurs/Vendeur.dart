@@ -1,123 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:waffir/common/styles/RoundedContainer.dart';
-import 'package:waffir/common/widgets/appbar/app_bar.dart';
-import 'package:waffir/common/widgets/custom_shapes/containers/search_Container.dart';
-import 'package:waffir/common/widgets/image_text_widget/Circular_image.dart';
-import 'package:waffir/common/widgets/layouts/grid_layout.dart';
-import 'package:waffir/common/widgets/texts/brand_text/TBrandTitleTEXT2.dart';
-import 'package:waffir/common/widgets/texts/section_heading.dart';
-import 'package:waffir/features/decouvrir/screens/decouvrir.dart';
+import 'package:get/get.dart';
+import 'package:waffir/common/styles/shadow.dart';
+import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/Vendeurs/controllers/vendor_products_controller.dart';
 import 'package:waffir/utils/constants/colors.dart';
-import 'package:waffir/utils/constants/enums.dart';
-import 'package:waffir/utils/constants/image_strings.dart';
-import 'package:waffir/utils/constants/sizes.dart';
 
 class Vend extends StatelessWidget {
-  const Vend({super.key});
+  Vend({super.key});
+
+  final vendorController = Get.put(VendorProductsController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: TColors.primary,
-        appBar: TAppBar(
-            title: Text('Nos vendeurs',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineMedium!
-                    .apply(color: TColors.white)),
-            actions: [
-              puceNotif(
-                onPressed: () {},
-                iconColor: TColors.white,
-              )
-            ]),
-        body: NestedScrollView(
-          headerSliverBuilder: (_, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                automaticallyImplyLeading: false,
-                pinned: true,
-                floating: true,
-                backgroundColor: TColors.primary,
-                expandedHeight: 440,
-                flexibleSpace: Padding(
-                  padding: const EdgeInsets.all(TSizes.defaultSpace),
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      const SizedBox(
-                        height: TSizes.spaceBtwItems,
+      backgroundColor: TColors.primary,
+      appBar: AppBar(
+        title: Text('Mes Produits',
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium!
+                .apply(color: TColors.white)),
+      ),
+      body: Obx(() {
+        if (vendorController.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return GridView.builder(
+            padding: const EdgeInsets.all(10),
+            itemCount: vendorController.vendorProducts.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.75, // Aspect ratio of each item
+            ),
+            itemBuilder: (context, index) => Container(
+              margin: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [ShadowStyle.verticalProductShadow],
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
                       ),
-                      const searchContainer(
-                        text: 'Recherche',
-                        padding: EdgeInsets.zero,
+                      child: Image.network(
+                        vendorController.vendorProducts[index].img,
+                        fit: BoxFit.fill,
                       ),
-                      const SizedBox(
-                        height: TSizes.spaceBtwSections,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        vendorController.vendorProducts[index].name,
+                        style: const TextStyle(color: Colors.black),
                       ),
-                      TSectionHeading(
-                        title: 'Nos meilleurs vendeurs',
-                        textColor: TColors.white,
-                        onPressed: () {},
-                        buttonTextColor: TColors.light,
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        '${vendorController.vendorProducts[index].price} DA',
+                        style: const TextStyle(color: Colors.black),
                       ),
-                      const SizedBox(
-                        height: TSizes.spaceBtwItems / 1.5,
-                      ),
-                      GridViewVertical(
-                          itemCount: 4,
-                          mainAxisExtent: 80,
-                          itemBuilder: (_, index) {
-                            return GestureDetector(
-                              onTap: () {},
-                              child: RoundedContainer(
-                                height: 180,
-                                padding: const EdgeInsets.all(TSizes.sm),
-                                showBorder: true,
-                                backgroundColor: Colors.transparent,
-                                child: Row(
-                                  children: [
-                                    const Flexible(
-                                        child: TCircularImage(
-                                      image: TImages.productImage1,
-                                    )),
-                                    const SizedBox(
-                                      width: TSizes.spaceBtwItems / 2,
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const TBrandTitleTextw(
-                                            title: 'Patisserie Soleil',
-                                            textColor: TColors.white,
-                                            brandTextSizes: TextSizes.large,
-                                          ),
-                                          Text(
-                                            '20 Produits',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelMedium,
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          })
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ];
-          },
-          body: Container(),
-        ));
+            ),
+          );
+        }
+      }),
+    );
   }
 }

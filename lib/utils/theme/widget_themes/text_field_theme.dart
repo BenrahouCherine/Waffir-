@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:waffir/utils/constants/colors.dart';
+
 import '../../constants/sizes.dart';
 
 class TTextFormFieldTheme {
@@ -10,21 +11,29 @@ class TTextFormFieldTheme {
     prefixIconColor: const Color.fromARGB(255, 255, 255, 255),
     suffixIconColor: const Color.fromARGB(255, 255, 255, 255),
     // constraints: const BoxConstraints.expand(height: TSizes.inputFieldHeight),
-    labelStyle: const TextStyle().copyWith(fontSize: TSizes.fontSizeMd, color: Color.fromARGB(255, 255, 255, 255)),
-    hintStyle: const TextStyle().copyWith(fontSize: TSizes.fontSizeSm, color: Color.fromARGB(255, 255, 255, 255)),
+    labelStyle: const TextStyle().copyWith(
+        fontSize: TSizes.fontSizeMd,
+        color: const Color.fromARGB(255, 255, 255, 255)),
+    hintStyle: const TextStyle().copyWith(
+        fontSize: TSizes.fontSizeSm,
+        color: const Color.fromARGB(255, 255, 255, 255)),
     errorStyle: const TextStyle().copyWith(fontStyle: FontStyle.normal),
-    floatingLabelStyle: const TextStyle().copyWith(color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.8)),
+    floatingLabelStyle: const TextStyle().copyWith(
+        color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.8)),
     border: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(TSizes.inputFieldRadius),
-      borderSide: const BorderSide(width: 1, color: Color.fromARGB(255, 255, 253, 253)),
+      borderSide:
+          const BorderSide(width: 1, color: Color.fromARGB(255, 255, 253, 253)),
     ),
     enabledBorder: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(TSizes.inputFieldRadius),
-      borderSide: const BorderSide(width: 1, color: Color.fromARGB(255, 255, 255, 255)),
+      borderSide:
+          const BorderSide(width: 1, color: Color.fromARGB(255, 255, 255, 255)),
     ),
-    focusedBorder:const OutlineInputBorder().copyWith(
+    focusedBorder: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(TSizes.inputFieldRadius),
-      borderSide: const BorderSide(width: 1, color: Color.fromARGB(255, 255, 255, 255)),
+      borderSide:
+          const BorderSide(width: 1, color: Color.fromARGB(255, 255, 255, 255)),
     ),
     errorBorder: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(TSizes.inputFieldRadius),
@@ -41,9 +50,12 @@ class TTextFormFieldTheme {
     prefixIconColor: TColors.darkGrey,
     suffixIconColor: TColors.darkGrey,
     // constraints: const BoxConstraints.expand(height: TSizes.inputFieldHeight),
-    labelStyle: const TextStyle().copyWith(fontSize: TSizes.fontSizeMd, color: TColors.white),
-    hintStyle: const TextStyle().copyWith(fontSize: TSizes.fontSizeSm, color: TColors.white),
-    floatingLabelStyle: const TextStyle().copyWith(color: TColors.white.withOpacity(0.8)),
+    labelStyle: const TextStyle()
+        .copyWith(fontSize: TSizes.fontSizeMd, color: TColors.white),
+    hintStyle: const TextStyle()
+        .copyWith(fontSize: TSizes.fontSizeSm, color: TColors.white),
+    floatingLabelStyle:
+        const TextStyle().copyWith(color: TColors.white.withOpacity(0.8)),
     border: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(TSizes.inputFieldRadius),
       borderSide: const BorderSide(width: 1, color: TColors.darkGrey),
