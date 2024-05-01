@@ -1,14 +1,17 @@
-- [ ] auth with google
+- [-] auth with google
 - [ ] forgot password
-- [ ] check user registration
-- [ ] fix navbars
-- [ ] seller page
+- [x] check user registration
+- [x] fix navbars
+- [x] fix logo quality
+- [x] add splash screen
+- [x] add launcher icon
 - [ ] see if there is other bugs
-- [ ] voir tout
-- [ ] vendors page
-- [ ] products page
-- [ ] update products when i add a new one as a selelr
+- [x] voir tout
+- [x] vendors page
+- [x] products page
 - [ ] modify product + delete
-- list vendors
-- auth google
+- [x] list vendors
 - [ ] add localization + map
+- [ ] process checkout
+- [ ] notifications to the sellers
+- [ ] form validation for product creation

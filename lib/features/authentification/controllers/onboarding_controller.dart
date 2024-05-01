@@ -22,7 +22,7 @@ class OnBoardingController extends GetxController {
   void NextPage() {
     if (currentPageIndex.value == 2) {
       if (FirebaseAuth.instance.currentUser != null) {
-        Get.offAll(() => const NavigationMenu());
+        Get.offAll(() => NavigationMenu());
         box.write("isIntroShown", true);
       } else {
         Get.offAll(() => LoginScreen());
@@ -36,7 +36,7 @@ class OnBoardingController extends GetxController {
 
   void skipPage() {
     if (FirebaseAuth.instance.currentUser != null) {
-      Get.offAll(() => const NavigationMenu());
+      Get.offAll(() => NavigationMenu());
       box.write("isIntroShown", true);
     } else {
       Get.offAll(() => LoginScreen());

@@ -4,28 +4,33 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:waffir/common/styles/spacing_styles.dart';
+import 'package:waffir/features/authentification/controllers/oauth_controller.dart';
 import 'package:waffir/features/authentification/screens/password_configuration/forget_password.dart';
 import 'package:waffir/features/authentification/screens/signup.widgets/signup.dart';
+import 'package:waffir/model/firebase_service.dart';
 import 'package:waffir/navigation_menu.dart';
 import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/image_strings.dart';
 import 'package:waffir/utils/constants/sizes.dart';
 import 'package:waffir/utils/constants/text_strings.dart';
 
-import '../../../../model/firebase_service.dart';
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuthService _auth = FirebaseAuthService();
-  bool _visibility = true;
+  bool _hidden = true;
+
+  OauthController oauthController = Get.put(OauthController());
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +75,7 @@ class LoginScreen extends StatelessWidget {
                           controller: _emailController,
                           decoration: const InputDecoration(
                             prefixIcon: Icon(
-                              Iconsax.direct_right,
+                              Iconsax.personalcard,
                               color: TColors.secondary,
                             ),
                             labelText: TTexts.email,
@@ -78,14 +83,23 @@ class LoginScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: TSizes.spaceBtwInputFields),
                         TextFormField(
-                          obscureText: _visibility,
+                          obscureText: _hidden,
                           controller: _passwordController,
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(Iconsax.password_check,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(Iconsax.password_check,
                                 color: TColors.secondary),
                             labelText: TTexts.password,
-                            suffixIcon: Icon(Iconsax.eye_slash,
-                                color: TColors.secondary),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _hidden ? Iconsax.eye_slash : Iconsax.eye,
+                                color: TColors.secondary,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _hidden = !_hidden;
+                                });
+                              },
+                            ),
                           ),
                         ),
                         const SizedBox(height: TSizes.spaceBtwInputFields / 2),
@@ -108,7 +122,7 @@ class LoginScreen extends StatelessWidget {
                         SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                                onPressed: () => _signIn(),
+                                onPressed: () async => await _signIn(),
                                 child: const Text(TTexts.signIn))),
                         const SizedBox(height: TSizes.spaceBtwItems),
                         SizedBox(
@@ -151,7 +165,9 @@ class LoginScreen extends StatelessWidget {
                               border: Border.all(color: TColors.grey),
                               borderRadius: BorderRadius.circular(100)),
                           child: IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await oauthController.signInWithGoogle();
+                              },
                               icon: const Image(
                                 width: TSizes.iconMd,
                                 height: TSizes.iconMd,
@@ -168,25 +184,19 @@ class LoginScreen extends StatelessWidget {
     String password = _passwordController.text;
     String email = _emailController.text;
     User? _user = await _auth.signInWithEmailAndPassword(email, password);
-    print(_user?.emailVerified.toString());
 
     if (_user != null) {
-      print(' user connected');
-      String uid = _user.uid;
-      Fluttertoast.showToast(msg: "User is successfully connected");
-      Fluttertoast.showToast(msg: uid);
-      print(uid);
-      Get.offAll(() => const NavigationMenu());
-    } else {
-      Fluttertoast.showToast(msg: "Some error happend");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.offAll(() => NavigationMenu());
+      });
     }
   }
 
   void inContact(TapDownDetails details) {
-    _visibility = false;
+    _hidden = false;
   }
 
   void outContact(TapUpDetails details) {
-    _visibility = true;
+    _hidden = true;
   }
 }

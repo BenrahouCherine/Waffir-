@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:waffir/common/styles/RoundedContainer.dart';
+import 'package:get/get.dart';
 import 'package:waffir/common/widgets/appbar/app_bar.dart';
 import 'package:waffir/common/widgets/custom_shapes/containers/search_Container.dart';
-import 'package:waffir/common/widgets/image_text_widget/Circular_image.dart';
-import 'package:waffir/common/widgets/layouts/grid_layout.dart';
-import 'package:waffir/common/widgets/texts/brand_text/TBrandTitleTEXT2.dart';
 import 'package:waffir/common/widgets/texts/section_heading.dart';
 import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/nos_vendeurs/controller/discover_vendors_controller.dart';
+import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/nos_vendeurs/screens/vendor_card.dart';
 import 'package:waffir/utils/constants/colors.dart';
-import 'package:waffir/utils/constants/enums.dart';
-import 'package:waffir/utils/constants/image_strings.dart';
 import 'package:waffir/utils/constants/sizes.dart';
 
-class DiscoverVendorsScreen extends GetView<DiscoverVendorsController> {
-  const DiscoverVendorsScreen({super.key});
+class DiscoverVendorsScreen extends StatefulWidget {
+  const DiscoverVendorsScreen({Key? key}) : super(key: key);
+
+  @override
+  _DiscoverVendorsScreenState createState() => _DiscoverVendorsScreenState();
+}
+
+class _DiscoverVendorsScreenState extends State<DiscoverVendorsScreen> {
+  final DiscoverVendorsController controller =
+      Get.find<DiscoverVendorsController>();
+  String searchQuery = "";
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +39,12 @@ class DiscoverVendorsScreen extends GetView<DiscoverVendorsController> {
               const SizedBox(
                 height: TSizes.spaceBtwItems,
               ),
-              const searchContainer(
-                text: 'Recherche',
+              SearchContainer(
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value;
+                  });
+                },
                 padding: EdgeInsets.zero,
               ),
               const SizedBox(
@@ -51,51 +59,33 @@ class DiscoverVendorsScreen extends GetView<DiscoverVendorsController> {
               const SizedBox(
                 height: TSizes.spaceBtwItems / 1.5,
               ),
-              GridViewVertical(
-                  itemCount: 4,
-                  mainAxisExtent: 80,
-                  itemBuilder: (_, index) {
-                    return GestureDetector(
-                      onTap: () {},
-                      child: RoundedContainer(
-                        height: 180,
-                        padding: const EdgeInsets.all(TSizes.sm),
-                        showBorder: true,
-                        backgroundColor: Colors.transparent,
-                        child: Row(
-                          children: [
-                            Flexible(
-                                child: const TCircularImage(
-                              image: TImages.productImage1,
-                            )),
-                            const SizedBox(
-                              width: TSizes.spaceBtwItems / 2,
-                            ),
-                            Expanded(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const TBrandTitleTextw(
-                                    title: 'Patisserie Soleil',
-                                    textColor: TColors.white,
-                                    brandTextSizes: TextSizes.large,
-                                  ),
-                                  Text(
-                                    '20 Produits',
-                                    overflow: TextOverflow.ellipsis,
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-              // Add more widgets here that will appear under the "Tout voir" button row
+              GridView.builder(
+                itemCount: controller.vendors
+                    .where((vendor) =>
+                        vendor.firstName.contains(searchQuery) ||
+                        vendor.lastName.contains(searchQuery))
+                    .length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  crossAxisSpacing: 4.0,
+                  mainAxisSpacing: 4.0,
+                  childAspectRatio: 3.5,
+                ),
+                itemBuilder: (_, index) {
+                  var filteredVendors = controller.vendors
+                      .where((vendor) =>
+                          vendor.firstName.contains(searchQuery) ||
+                          vendor.lastName.contains(searchQuery))
+                      .toList();
+
+                  return VendorCard(
+                    vendor: filteredVendors[index],
+                    numberOfProducts: filteredVendors[index].productsCount ?? 0,
+                  );
+                },
+              )
             ],
           ),
         ),

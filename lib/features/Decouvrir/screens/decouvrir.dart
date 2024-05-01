@@ -78,7 +78,7 @@ class DecScreen extends StatelessWidget {
           child: Column(
             children: [
               TSectionHeading(
-                title: 'Produits Populaires',
+                title: 'Produits à découvrir',
                 onPressed: () {},
                 buttonTextColor: TColors.dark,
               ),

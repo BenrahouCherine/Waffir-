@@ -5,7 +5,6 @@ import 'package:waffir/features/Profil/models/user.dart';
 
 class DiscoverVendorsController extends GetxController {
   RxList<UserModel> vendors = <UserModel>[].obs;
-  RxInt productsCount = 0.obs;
   RxBool isLoading = false.obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -14,6 +13,21 @@ class DiscoverVendorsController extends GetxController {
   void onInit() {
     fetchVendors();
     super.onInit();
+  }
+
+  Future<int> countProducts(String vendorId) async {
+    try {
+      QuerySnapshot querySnapshot = await firestore
+          .collection("product")
+          .where("seller_uid", isEqualTo: vendorId)
+          .get();
+      return querySnapshot.docs.length;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+      return 0;
+    }
   }
 
   Future fetchVendors() async {
@@ -25,7 +39,9 @@ class DiscoverVendorsController extends GetxController {
           .get();
 
       for (var doc in querySnapshot.docs) {
-        vendors.add(UserModel.fromQueryDocumentSnapshot(doc));
+        UserModel vendor = UserModel.fromQueryDocumentSnapshot(doc);
+        vendor.productsCount = await countProducts(vendor.uid);
+        vendors.add(vendor);
       }
     } catch (e) {
       if (kDebugMode) {

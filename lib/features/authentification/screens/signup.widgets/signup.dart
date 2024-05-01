@@ -29,6 +29,7 @@ class _CreateAccountState extends State<SignupScreen> {
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final FirebaseAuthService _auth = FirebaseAuthService();
+  bool _hidden = false;
 
   @override
   void dispose() {
@@ -122,14 +123,23 @@ class _CreateAccountState extends State<SignupScreen> {
                       ),
                       const SizedBox(height: 14),
                       TextFormField(
-                        obscureText: true,
+                        obscureText: _hidden,
                         controller: _passwordController,
-                        decoration: const InputDecoration(
-                          labelText: TTexts.password,
-                          prefixIcon: Icon(Iconsax.password_check,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Iconsax.password_check,
                               color: TColors.secondary),
-                          suffixIcon:
-                              Icon(Iconsax.eye_slash, color: TColors.secondary),
+                          labelText: TTexts.password,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _hidden ? Iconsax.eye_slash : Iconsax.eye,
+                              color: TColors.secondary,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _hidden = !_hidden;
+                              });
+                            },
+                          ),
                         ),
                       ),
                       const SizedBox(height: 14),

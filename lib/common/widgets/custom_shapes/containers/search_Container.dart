@@ -1,50 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/sizes.dart';
-import 'package:waffir/utils/device/device_utility.dart';
 
-class searchContainer extends StatelessWidget {
-  const searchContainer({
-    super.key, required this.text, this.icon = Iconsax.search_normal,  this.showBackground = false,  this.showBorder = true, this.onTap,  this.padding = const EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),
+class SearchContainer extends StatelessWidget {
+  const SearchContainer({
+    super.key,
+    this.icon = Iconsax.search_normal,
+    this.showBackground = false,
+    this.showBorder = true,
+    this.onChanged,
+    this.padding = const EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),
   });
- final String text ;
- final IconData? icon ;
- final bool showBackground , showBorder ;
- final VoidCallback ? onTap ;
-final EdgeInsetsGeometry padding ;
 
+  final IconData? icon;
+  final bool showBackground, showBorder;
+  final ValueChanged<String>? onChanged;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
-
-     
-    return GestureDetector(
-       onTap: onTap ,
-      child: Padding(
-        padding: padding,
-        child: Container(
-        width:TDeviceUtils.getScreenWidth(context) ,
-        padding: const EdgeInsets.all(TSizes.md),
-        decoration: BoxDecoration(
-         color: showBackground ? Colors.white : Colors.transparent ,
-          borderRadius: BorderRadius.circular(TSizes.cardRadiusLg),
-          border: showBorder? Border.all(color: TColors.grey): null,
-        
-        
-        
-        ),
-        child:  Row(
-          children: [
-             Icon(icon , color:TColors.secondary),
-            const SizedBox(width: TSizes.spaceBtwItems,),
-            Text (text  , style:Theme.of(context).textTheme.bodySmall),
-          ],
-        ),
-        
+    return Padding(
+      padding: padding,
+      child: TextField(
+        onChanged: onChanged,
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            Iconsax.search_normal,
+            size: 30,
+            color: Theme.of(context).primaryColor,
+          ),
+          border: InputBorder.none,
+          hintText: 'Rechercher',
         ),
       ),
     );
   }
 }
-

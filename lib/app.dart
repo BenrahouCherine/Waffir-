@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:waffir/entry.dart';
+import 'package:waffir/utils/bindings/app_bindings.dart';
 import 'package:waffir/utils/theme/theme.dart';
 
 class App extends StatelessWidget {
@@ -14,6 +15,7 @@ class App extends StatelessWidget {
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
       home: const EntryPage(),
+      initialBinding: AppBindings(),
     );
   }
 }

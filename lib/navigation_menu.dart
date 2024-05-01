@@ -15,13 +15,12 @@ import 'package:waffir/utils/constants/colors.dart';
 import 'features/addProduct/screens/AddProduct.dart';
 
 class NavigationMenu extends StatelessWidget {
-  const NavigationMenu({super.key});
+  NavigationMenu({super.key});
+  final controller = Get.put(NavigationController());
+  final profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NavigationController());
-    final profileController = Get.put(ProfileController());
-
     return FutureBuilder(
       future: profileController.getUser(),
       builder: (context, snapshot) {
@@ -34,63 +33,58 @@ class NavigationMenu extends StatelessWidget {
                 : profileController.user.value.userNature == null
                     ? Container()
                     : Scaffold(
-                        bottomNavigationBar: Obx(
-                          () => profileController.user.value.userNature ==
-                                  "Seller"
-                              ? NavigationBar(
-                                  height: 80,
-                                  elevation: 0,
-                                  selectedIndex: controller.selectedIndex.value,
-                                  onDestinationSelected: (index) =>
-                                      controller.selectedIndex.value = index,
-                                  backgroundColor: TColors.white,
-                                  indicatorColor:
-                                      const Color.fromARGB(189, 242, 174, 28),
-                                  destinations: const [
-                                    NavigationDestination(
-                                        icon: Icon(Iconsax.heart),
-                                        label: 'Commande'),
-                                    NavigationDestination(
-                                        icon: Icon(Iconsax.bag),
-                                        label: 'Produit'),
-                                    NavigationDestination(
-                                        icon: Icon(Iconsax.user),
-                                        label: 'User'),
-                                  ],
-                                )
-                              : NavigationBar(
-                                  height: 80,
-                                  elevation: 0,
-                                  selectedIndex: controller.selectedIndex.value,
-                                  onDestinationSelected: (index) =>
-                                      controller.selectedIndex.value = index,
-                                  backgroundColor: TColors.white,
-                                  indicatorColor:
-                                      const Color.fromARGB(189, 242, 174, 28),
-                                  destinations: const [
-                                    NavigationDestination(
-                                        icon: Icon(Iconsax.discover),
-                                        label: 'Découvrir'),
-                                    NavigationDestination(
-                                        icon: Icon(Iconsax.bag),
-                                        label: 'Vendeurs'),
-                                    NavigationDestination(
-                                        icon: Icon(Iconsax.heart),
-                                        label: 'Favoris'),
-                                    NavigationDestination(
-                                        icon: Icon(Iconsax.user),
-                                        label: 'User'),
-                                  ],
-                                ),
-                        ),
-                        body: Obx(() => profileController
+                        bottomNavigationBar: profileController
                                     .user.value.userNature ==
+                                "Seller"
+                            ? NavigationBar(
+                                height: 80,
+                                elevation: 0,
+                                selectedIndex: controller.selectedIndex.value,
+                                onDestinationSelected: (index) =>
+                                    controller.selectedIndex.value = index,
+                                backgroundColor: TColors.white,
+                                indicatorColor:
+                                    const Color.fromARGB(189, 242, 174, 28),
+                                destinations: const [
+                                  NavigationDestination(
+                                      icon: Icon(Iconsax.heart),
+                                      label: 'Commande'),
+                                  NavigationDestination(
+                                      icon: Icon(Iconsax.bag),
+                                      label: 'Produit'),
+                                  NavigationDestination(
+                                      icon: Icon(Iconsax.user), label: 'User'),
+                                ],
+                              )
+                            : NavigationBar(
+                                height: 80,
+                                elevation: 0,
+                                selectedIndex: controller.selectedIndex.value,
+                                onDestinationSelected: (index) =>
+                                    controller.selectedIndex.value = index,
+                                backgroundColor: TColors.white,
+                                indicatorColor:
+                                    const Color.fromARGB(189, 242, 174, 28),
+                                destinations: const [
+                                  NavigationDestination(
+                                      icon: Icon(Iconsax.discover),
+                                      label: 'Découvrir'),
+                                  NavigationDestination(
+                                      icon: Icon(Iconsax.bag),
+                                      label: 'Vendeurs'),
+                                  NavigationDestination(
+                                      icon: Icon(Iconsax.heart),
+                                      label: 'Favoris'),
+                                  NavigationDestination(
+                                      icon: Icon(Iconsax.user), label: 'User'),
+                                ],
+                              ),
+                        body: profileController.user.value.userNature ==
                                 "Seller"
                             ? controller
                                 .sellerScreens[controller.selectedIndex.value]
                             : controller
-                                .bayerScreens[controller.selectedIndex.value]),
-                      );
+                                .bayerScreens[controller.selectedIndex.value]);
           });
         }
       },

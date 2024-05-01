@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:waffir/features/Favoris/controllers/fav_controller.dart';
-import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/nos_vendeurs/controller/discover_vendors_controller.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/features/authentification/screens/login/login.dart';
 import 'package:waffir/features/authentification/screens/onboarding/onboarding.dart';
@@ -20,13 +19,17 @@ class _EntryPageState extends State<EntryPage> {
   final _auth = FirebaseAuth.instance;
   final box = GetStorage();
   bool isIntroShown = false;
+  final profileController = Get.put(ProfileController());
+
+  void _removeSplashScreen() async {
+    await Future.delayed(const Duration(seconds: 2));
+    FlutterNativeSplash.remove();
+  }
 
   @override
   void initState() {
     isIntroShown = box.read('isIntroShown') ?? false;
-    Get.put(ProfileController());
-    Get.put(FavController());
-    Get.put(DiscoverVendorsController());
+    _removeSplashScreen();
     super.initState();
   }
 
@@ -39,17 +42,19 @@ class _EntryPageState extends State<EntryPage> {
           final User? user = snapshot.data;
           if (user == null) {
             if (isIntroShown) {
-              return LoginScreen();
+              Future.microtask(() => Get.offAll(() => LoginScreen()));
             } else {
-              return const OnBoardingScreen();
+              Future.microtask(
+                  () => Get.offAll(() => const OnBoardingScreen()));
             }
           } else {
-            return const NavigationMenu();
+            profileController.getUser();
+            Future.microtask(() => Get.offAll(() => NavigationMenu()));
           }
-        } else {
-          return const Scaffold(
-              body: Center(child: CircularProgressIndicator()));
         }
+        return const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        );
       },
     );
   }

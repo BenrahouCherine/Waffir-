@@ -8,8 +8,10 @@ class UserModel {
   String userNature;
   String phone;
   String? photoURL;
+  int? productsCount;
 
   UserModel({
+    this.productsCount,
     required this.uid,
     required this.userNature,
     required this.username,
