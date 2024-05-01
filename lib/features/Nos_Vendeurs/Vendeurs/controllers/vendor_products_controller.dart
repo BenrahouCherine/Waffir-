@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -26,12 +24,10 @@ class VendorProductsController extends GetxController {
       QuerySnapshot snapshot = await productCollection
           .where('seller_uid', isEqualTo: auth.currentUser!.uid)
           .get();
-      log(snapshot.docs.toString());
       if (snapshot.docs.isNotEmpty) {
         vendorProducts.clear();
         for (var element in snapshot.docs) {
           vendorProducts.add(ProductModel.fromQuerySnapshot(element));
-          log('Product: ${ProductModel.fromQuerySnapshot(element).name}');
         }
       }
     } catch (error) {

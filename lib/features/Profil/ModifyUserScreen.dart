@@ -139,17 +139,11 @@ class _CreateAccountState extends State<ModifyUserScreen> {
       'lastname': lastname,
       'phone': phone,
     };
-    log('entry request of');
     CollectionReference collectionReference =
         FirebaseFirestore.instance.collection('userDetail');
-    log('mid request of');
-    log(firstname);
-    log(username);
-    log(phone);
     collectionReference.doc(username).update(userDetail).then(
         (value) => log('succesfully modify'),
         onError: (e) => log("error type $e"));
-    log('back request of');
     _showDialogAlert(context);
   }
 

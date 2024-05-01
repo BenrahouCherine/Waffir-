@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:waffir/features/Profil/models/user.dart';
 
@@ -26,7 +27,9 @@ class DiscoverVendorsController extends GetxController {
         vendors.add(UserModel.fromQueryDocumentSnapshot(doc));
       }
     } catch (e) {
-      printError(info: e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     } finally {
       isLoading.value = false;
     }

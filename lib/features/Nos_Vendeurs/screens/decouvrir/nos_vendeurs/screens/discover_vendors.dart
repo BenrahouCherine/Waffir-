@@ -7,7 +7,7 @@ import 'package:waffir/common/widgets/image_text_widget/Circular_image.dart';
 import 'package:waffir/common/widgets/layouts/grid_layout.dart';
 import 'package:waffir/common/widgets/texts/brand_text/TBrandTitleTEXT2.dart';
 import 'package:waffir/common/widgets/texts/section_heading.dart';
-import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/nos_vendeurs/controller/discover_vendors.dart';
+import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/nos_vendeurs/controller/discover_vendors_controller.dart';
 import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/enums.dart';
 import 'package:waffir/utils/constants/image_strings.dart';

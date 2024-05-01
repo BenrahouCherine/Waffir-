@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -60,7 +58,6 @@ class VerticalProductCardView extends StatelessWidget {
                             : Icons.favorite_border,
                         color: Colors.red,
                         onPressed: () {
-                          log(favController.favProducts.length);
                           if (favController.favProducts.contains(product)) {
                             favController.removeFavProduct(product);
                           } else {

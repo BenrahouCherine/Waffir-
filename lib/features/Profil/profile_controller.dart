@@ -15,10 +15,6 @@ class ProfileController extends GetxController {
   void onInit() {
     getUser();
     super.onInit();
-    ever(user, (_) {
-      log(user.value.toString());
-      update();
-    });
   }
 
   Rx<UserModel> user = UserModel(
@@ -48,7 +44,6 @@ class ProfileController extends GetxController {
       if (snapshot.docs.isNotEmpty) {
         var doc = snapshot.docs.first;
         user.value = UserModel.fromQueryDocumentSnapshot(doc);
-        log(user.value.toString());
         update();
       }
     }).catchError((error) => log("Failed to fetch users: $error"));
