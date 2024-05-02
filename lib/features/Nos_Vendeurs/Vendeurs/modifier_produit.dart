@@ -5,26 +5,37 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:waffir/features/Nos_Vendeurs/Vendeurs/controllers/vendor_products_controller.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
-import 'package:waffir/features/addProduct/controller/add_product_controller.dart';
-import 'package:waffir/features/cart/controllers/cart_controller.dart';
-import 'package:waffir/features/cart/screens/cart_screen.dart';
+import 'package:waffir/features/addProduct/model/product.dart';
 import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/sizes.dart';
 import 'package:waffir/utils/constants/text_strings.dart';
 
-class AddProduct extends StatefulWidget {
-  const AddProduct({super.key});
+class ModifierProductScreen extends StatefulWidget {
+  const ModifierProductScreen({super.key, required this.product});
 
+  final ProductModel product;
   @override
-  State<AddProduct> createState() => _AddProductState();
+  State<ModifierProductScreen> createState() => _ModifierProductScreenState();
 }
 
-class _AddProductState extends State<AddProduct> {
+class _ModifierProductScreenState extends State<ModifierProductScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
+  var _chosenCategory;
+  String? imgsrc;
+  @override
+  void initState() {
+    super.initState();
+    _chosenCategory = widget.product.category;
+    _nameController.text = widget.product.name;
+    _descController.text = widget.product.description;
+    _priceController.text = widget.product.price.toString();
+    _quantityController.text = widget.product.quantity.toString();
+  }
 
   @override
   void dispose() {
@@ -39,17 +50,15 @@ class _AddProductState extends State<AddProduct> {
 
   ProfileController profileController = Get.find();
 
-  var _chosenCategory;
-  String? imgsrc;
   final _formKey = GlobalKey<FormState>();
 
-  final addProductController = Get.put(AddProductController());
+  final vendorController = Get.put(VendorProductsController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Ajouter un produit"),
+        title: const Text('Modifier le produit'),
       ),
       backgroundColor: TColors.primary,
       body: SingleChildScrollView(
@@ -146,6 +155,14 @@ class _AddProductState extends State<AddProduct> {
                       },
                     ),
                     const SizedBox(height: 14),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.network(
+                        widget.product.img,
+                        height: Get.height * 0.3,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     // field to add image
                     Row(
                       children: [
@@ -189,49 +206,59 @@ class _AddProductState extends State<AddProduct> {
                     ),
                     const SizedBox(height: 28),
                     SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          String category = _chosenCategory.toString();
-                          String description = _descController.text;
-                          String price = _priceController.text;
-                          String name = _nameController.text;
-                          String quantity = _quantityController.text;
-                          if (_formKey.currentState!.validate()) {
-                            if (imgsrc == null) {
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            String category = _chosenCategory.toString();
+                            String description = _descController.text;
+                            String price = _priceController.text;
+                            String name = _nameController.text;
+                            String quantity = _quantityController.text;
+                            if (_formKey.currentState!.validate()) {
+                              if (imgsrc == null ||
+                                  imgsrc == widget.product.img) {
+                                // Keep the current image
+                                ProductModel product = ProductModel(
+                                  market: widget.product.market,
+                                  category: category,
+                                  description: description,
+                                  img: widget.product.img,
+                                  name: name,
+                                  price: int.parse(price),
+                                  quantity: quantity,
+                                  sellerUid: selledUid,
+                                  uid: widget.product.uid,
+                                );
+                                await vendorController.modifyProduct(product);
+                              } else {
+                                // Upload the new image
+                                String? photo =
+                                    await vendorController.uploadImage(
+                                        File(imgsrc!), widget.product.uid!);
+                                ProductModel product = ProductModel(
+                                  market: widget.product.market,
+                                  category: category,
+                                  description: description,
+                                  img: photo!,
+                                  name: name,
+                                  price: int.parse(price),
+                                  quantity: quantity,
+                                  sellerUid: selledUid,
+                                  uid: widget.product.uid,
+                                );
+                                await vendorController.modifyProduct(product);
+                              }
+                            } else {
                               Get.snackbar(
                                 "Erreur",
                                 "Veuillez ajouter une image",
                                 backgroundColor: Colors.red,
                                 dismissDirection: DismissDirection.horizontal,
-                                isDismissible: true,
-                                icon: const Icon(
-                                  Icons.error,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
                               );
-                              return;
                             }
-
-                            addProductController.product.update((val) {
-                              val!.sellerUid = selledUid;
-                              val.category = category;
-                              val.name = name;
-                              val.description = description;
-                              val.market =
-                                  profileController.user.value.username;
-                              val.img = imgsrc!;
-                              val.price = int.parse(price);
-                              val.quantity = quantity;
-                            });
-
-                            await addProductController.addProduct();
-                          }
-                        },
-                        child: const Text('Ajouter un produit'),
-                      ),
-                    )
+                          },
+                          child: const Text('Modifier le produit'),
+                        ))
                   ],
                 ),
               ),
@@ -242,89 +269,6 @@ class _AddProductState extends State<AddProduct> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class THomeCategories extends StatelessWidget {
-  const THomeCategories({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-}
-
-class puceNotif extends StatelessWidget {
-  puceNotif({super.key, required this.iconColor});
-  final Color iconColor;
-
-  final cartController = Get.put(CartController());
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        IconButton(
-            onPressed: () {
-              Get.to(() => const CartScreen());
-            },
-            icon: const Icon(
-              Iconsax.shopping_bag,
-              color: TColors.white,
-            )),
-        Positioned(
-          right: 0,
-          child: Container(
-              width: 18,
-              height: 18,
-              decoration: BoxDecoration(
-                  color: TColors.black,
-                  borderRadius: BorderRadius.circular(100)),
-              child: Obx(() => Center(
-                  child: Text(cartController.cartItems.length.toString(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelLarge!
-                          .apply(color: TColors.white, fontSizeFactor: 0.8))))),
-        )
-      ],
-    );
-  }
-}
-
-class CircularContainer extends StatelessWidget {
-  const CircularContainer({
-    super.key,
-    this.child,
-    this.width = 400,
-    this.height = 400,
-    this.radius = 400,
-    this.padding = 0,
-    required this.backgroundColor,
-    this.margin,
-  });
-  final double? width;
-  final double? height;
-  final double radius;
-  final double padding;
-  final Widget? child;
-  final EdgeInsets? margin;
-  final Color backgroundColor;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      margin: margin,
-      padding: EdgeInsets.all(padding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(radius),
-        color: backgroundColor,
-      ),
-      child: child,
     );
   }
 }

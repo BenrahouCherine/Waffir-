@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:waffir/features/cart/controllers/cart_controller.dart';
 import 'package:waffir/features/cart/screens/cart_item_card.dart';
+import 'package:waffir/features/orders/client/screens/checkout_screen.dart';
+import 'package:waffir/utils/constants/colors.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -15,11 +18,15 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.black,
+      statusBarIconBrightness: Brightness.dark,
+    ));
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: TColors.primary,
       appBar: AppBar(
         elevation: 1,
-        leading: const BackButton(color: Colors.black),
+        leading: const BackButton(color: Colors.white),
       ),
       body: SafeArea(
         child: Container(
@@ -28,7 +35,7 @@ class _CartScreenState extends State<CartScreen> {
           child: GetX<CartController>(
             builder: (controller) {
               if (controller.cartItems.isEmpty) {
-                return Center(
+                return const Center(
                     child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -37,7 +44,7 @@ class _CartScreenState extends State<CartScreen> {
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
-                          color: Colors.grey[900]),
+                          color: Colors.white),
                     ),
                   ],
                 ));
@@ -49,19 +56,19 @@ class _CartScreenState extends State<CartScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           "Produits",
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
-                              color: Colors.grey[800]),
+                              color: Colors.white),
                         ),
                         Text(
                           "${controller.cartItems.length} produits",
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: Colors.grey[600]),
+                              color: Colors.grey[100]),
                         ),
                       ],
                     ),
@@ -84,19 +91,19 @@ class _CartScreenState extends State<CartScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           "Total",
                           style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.w600,
-                              color: Colors.grey[800]),
+                              color: Colors.white),
                         ),
                         Text(
                           "${controller.total.value} DA",
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: Colors.grey[600]),
+                              color: Colors.grey[100]),
                         ),
                       ],
                     ),
@@ -106,8 +113,10 @@ class _CartScreenState extends State<CartScreen> {
                       padding: const EdgeInsets.only(
                           left: 12.0, right: 12.0, top: 12.0, bottom: 18.0),
                       child: ElevatedButton(
-                        child: Text("Commander"),
-                        onPressed: () {},
+                        child: const Text("Commander"),
+                        onPressed: () {
+                          Get.to(() => const CheckoutScreen());
+                        },
                       )),
                 ],
               );

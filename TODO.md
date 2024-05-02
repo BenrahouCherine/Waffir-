@@ -1,20 +1,20 @@
-- [-] auth with google
-- [ ] forgot password
 - [x] check user registration
-- [x] fix navbars
 - [x] fix logo quality
 - [x] add splash screen
 - [x] add launcher icon
-- [ ] see if there is other bugs
-- [x] voir tout
 - [x] vendors page
 - [x] products page
-- [ ] modify product + delete
 - [x] list vendors
+- [x] fix seller navbar change the heart icon to something pore significant
+- [x] modify product + delete
+- [x] make an action button on my products section
+- [x] fix products card for vendor products
+- [x] form validation check for all the inputs and make the inputs accessible according to their nature (email ...)
+- [x] process checkout
+- [x] show orders for sellers
+- [-] auth with google
+- [-] fix order success screen and fail screen
+- [ ] forgot password
 - [ ] add localization + map
-- [ ] process checkout
 - [ ] notifications to the sellers
-- [ ] form validation check for all the inputs and make the inputs accessible according to their nature (email ...)
-- [ ] merge addProduct and fetchFendorProducts into one controller and add the rest of the crud there too
-- [ ] fix seller navbar change the heart icon to something pore significant
-- [ ] make an action button on my products section
+- [ ] in profile for buyers make a section to see orders

@@ -38,7 +38,11 @@ class CartItemCard extends StatelessWidget {
         }
       },
       background: Container(
-        color: Colors.red,
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(10),
+        ),
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.all(16),
         child: const Icon(

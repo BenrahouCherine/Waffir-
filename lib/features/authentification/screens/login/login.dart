@@ -18,13 +18,14 @@ import 'package:waffir/utils/constants/sizes.dart';
 import 'package:waffir/utils/constants/text_strings.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuthService _auth = FirebaseAuthService();
@@ -66,74 +67,95 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   Form(
+                      key: _formKey,
                       child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: TSizes.spaceBtwSections),
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _emailController,
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(
-                              Iconsax.personalcard,
-                              color: TColors.secondary,
-                            ),
-                            labelText: TTexts.email,
-                          ),
-                        ),
-                        const SizedBox(height: TSizes.spaceBtwInputFields),
-                        TextFormField(
-                          obscureText: _hidden,
-                          controller: _passwordController,
-                          decoration: InputDecoration(
-                            prefixIcon: const Icon(Iconsax.password_check,
-                                color: TColors.secondary),
-                            labelText: TTexts.password,
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _hidden ? Iconsax.eye_slash : Iconsax.eye,
-                                color: TColors.secondary,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: TSizes.spaceBtwSections),
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              keyboardType: TextInputType.emailAddress,
+                              controller: _emailController,
+                              decoration: const InputDecoration(
+                                prefixIcon: Icon(
+                                  Iconsax.personalcard,
+                                  color: TColors.secondary,
+                                ),
+                                labelText: TTexts.email,
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  _hidden = !_hidden;
-                                });
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Veuillez entrer votre email';
+                                } else if (!value.contains('@')) {
+                                  return 'Veuillez entrer un email valide';
+                                }
+                                return null;
                               },
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: TSizes.spaceBtwInputFields / 2),
-                        Row(
-                          children: [
-                            Checkbox(value: true, onChanged: (value) {}),
-                            const Text(TTexts.rememberMe),
+                            const SizedBox(height: TSizes.spaceBtwInputFields),
+                            TextFormField(
+                              obscureText: _hidden,
+                              controller: _passwordController,
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(Iconsax.password_check,
+                                    color: TColors.secondary),
+                                labelText: TTexts.password,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _hidden ? Iconsax.eye_slash : Iconsax.eye,
+                                    color: TColors.secondary,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _hidden = !_hidden;
+                                    });
+                                  },
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Veuillez entrer votre mot de passe';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(
+                                height: TSizes.spaceBtwInputFields / 2),
+                            Row(
+                              children: [
+                                Checkbox(value: true, onChanged: (value) {}),
+                                const Text(TTexts.rememberMe),
+                              ],
+                            ),
+                            TextButton(
+                              onPressed: () => Get.to(() => forgetPassword()),
+                              child: const Text(
+                                TTexts.forgetPassword,
+                                style: TextStyle(
+                                    color: Color.fromARGB(210, 255, 255,
+                                        255)), // Remplacez `Colors.red` par la couleur de votre choix
+                              ),
+                            ),
+                            const SizedBox(height: TSizes.spaceBtwSections),
+                            SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                    onPressed: () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        await _signIn();
+                                      }
+                                    },
+                                    child: const Text(TTexts.signIn))),
+                            const SizedBox(height: TSizes.spaceBtwItems),
+                            SizedBox(
+                                width: double.infinity,
+                                child: OutlinedButton(
+                                    onPressed: () =>
+                                        Get.to(() => const SignupScreen()),
+                                    child: const Text(TTexts.createAccount))),
                           ],
                         ),
-                        TextButton(
-                          onPressed: () => Get.to(() => forgetPassword()),
-                          child: const Text(
-                            TTexts.forgetPassword,
-                            style: TextStyle(
-                                color: Color.fromARGB(210, 255, 255,
-                                    255)), // Remplacez `Colors.red` par la couleur de votre choix
-                          ),
-                        ),
-                        const SizedBox(height: TSizes.spaceBtwSections),
-                        SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                                onPressed: () async => await _signIn(),
-                                child: const Text(TTexts.signIn))),
-                        const SizedBox(height: TSizes.spaceBtwItems),
-                        SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                                onPressed: () =>
-                                    Get.to(() => const SignupScreen()),
-                                child: const Text(TTexts.createAccount))),
-                      ],
-                    ),
-                  )),
+                      )),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

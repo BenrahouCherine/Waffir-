@@ -30,6 +30,8 @@ dependencies:
   image_picker: ^1.0.4
   file_picker: ^4.5.1
   google_sign_in: ^6.2.1
+  dzair_data_usage: ^1.0.1
+  confetti: ^0.7.0
 
   
 flutter_native_splash:

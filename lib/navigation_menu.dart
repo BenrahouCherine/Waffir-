@@ -10,9 +10,8 @@ import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/nos_vendeurs/scre
 import 'package:waffir/features/Profil/Client.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/features/decouvrir/screens/decouvrir.dart';
+import 'package:waffir/features/orders/vendor/screens/vendor_orders_screen.dart';
 import 'package:waffir/utils/constants/colors.dart';
-
-import 'features/addProduct/screens/AddProduct.dart';
 
 class NavigationMenu extends StatelessWidget {
   NavigationMenu({super.key});
@@ -47,7 +46,7 @@ class NavigationMenu extends StatelessWidget {
                                     const Color.fromARGB(189, 242, 174, 28),
                                 destinations: const [
                                   NavigationDestination(
-                                      icon: Icon(Iconsax.heart),
+                                      icon: Icon(Iconsax.document),
                                       label: 'Commande'),
                                   NavigationDestination(
                                       icon: Icon(Iconsax.bag),
@@ -94,7 +93,7 @@ class NavigationMenu extends StatelessWidget {
 
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
-  final sellerScreens = [const AddProduct(), Vend(), const Client()];
+  final sellerScreens = [const VendorOrdersScreen(), Vend(), const Client()];
   final bayerScreens = [
     DecScreen(),
     const DiscoverVendorsScreen(),

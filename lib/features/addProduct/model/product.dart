@@ -38,6 +38,20 @@ class ProductModel {
     );
   }
 
+  factory ProductModel.fromJson(Map<String,dynamic> json){
+
+    return ProductModel(
+      sellerUid: json['seller_uid'],
+      category: json['category'],
+      name: json['name'],
+      description: json['description'],
+      market: json['market'],
+      img: json['img'],
+      price: int.parse(json['price']),
+      quantity: json['quantity'],
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,

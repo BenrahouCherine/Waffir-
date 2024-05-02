@@ -33,6 +33,18 @@ class UserModel {
             "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=386&q=80");
   }
 
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+        uid: json['uid'],
+        username: json['username'],
+        firstName: json['firstname'],
+        lastName: json['lastname'],
+        userNature: json['userNature'],
+        phone: json['phone'],
+        photoURL: json['photo_URL'] ??
+            "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=386&q=80");
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,

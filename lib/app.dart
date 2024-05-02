@@ -10,6 +10,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      title: 'Waffir',
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       theme: TAppTheme.lightTheme,

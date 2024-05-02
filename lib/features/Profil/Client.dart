@@ -116,7 +116,7 @@ class _ClientState extends State<Client> {
                 elevation: 4,
                 shadowColor: Colors.black12,
                 child: ListTile(
-                  leading: Icon(Icons.location_on_outlined),
+                  leading: Icon(Icons.edit_outlined),
                   title: Text("Modify account"),
                   trailing: Icon(Icons.chevron_right),
                   onTap: _ModifyTaped,
@@ -142,7 +142,7 @@ class _ClientState extends State<Client> {
                 elevation: 4,
                 shadowColor: Colors.black12,
                 child: ListTile(
-                  leading: Icon(Icons.location_on_outlined),
+                  leading: Icon(Icons.logout_outlined),
                   title: Text("Log out"),
                   trailing: Icon(Icons.chevron_right),
                   onTap: _logout,
