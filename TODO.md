@@ -14,4 +14,7 @@
 - [ ] add localization + map
 - [ ] process checkout
 - [ ] notifications to the sellers
-- [ ] form validation for product creation
+- [ ] form validation check for all the inputs and make the inputs accessible according to their nature (email ...)
+- [ ] merge addProduct and fetchFendorProducts into one controller and add the rest of the crud there too
+- [ ] fix seller navbar change the heart icon to something pore significant
+- [ ] make an action button on my products section
