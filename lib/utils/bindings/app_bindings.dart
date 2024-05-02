@@ -8,7 +8,6 @@ class AppBindings extends Bindings {
   @override
   void dependencies() {
     Get.put(ProfileController());
-    // Get.put(FCMService());
     Get.put(FavController());
     Get.put(DiscoverVendorsController());
     Get.put(CartController());

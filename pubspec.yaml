@@ -32,10 +32,6 @@ dependencies:
   google_sign_in: ^6.2.1
   dzair_data_usage: ^1.0.1
   confetti: ^0.7.0
-  # awesome_notifications_fcm: ^0.9.3+1
-  # awesome_notifications_core: ^0.9.3
-  # awesome_notifications: ^0.9.3+1
-  # firebase_crashlytics: ^3.5.4
 
 flutter_native_splash:
   color: "#0B622E"
