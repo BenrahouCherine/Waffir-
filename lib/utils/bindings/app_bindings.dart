@@ -8,10 +8,10 @@ import 'package:waffir/features/notifs/fcm_service.dart';
 class AppBindings extends Bindings {
   @override
   void dependencies() {
-    Get.put(ProfileController());
-    Get.put(FCMService());
-    Get.put(FavController());
-    Get.put(DiscoverVendorsController());
-    Get.put(CartController());
+    Get.put(FCMService(), permanent: true);
+    Get.put(ProfileController(), permanent: true);
+    Get.put(CartController(), permanent: true);
+    Get.put(FavController(), permanent: true);
+    Get.put(DiscoverVendorsController(), permanent: true);
   }
 }
