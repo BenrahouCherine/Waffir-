@@ -20,3 +20,4 @@
 - [x] search products
 - [x] notifications to the sellers
 - [x] remember me
+- [ ] modify user not working

@@ -8,18 +8,15 @@ import 'package:iconsax/iconsax.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/sizes.dart';
-import 'package:waffir/utils/constants/text_strings.dart';
-
-import '../authentification/screens/login/login.dart';
 
 class ModifyUserScreen extends StatefulWidget {
   const ModifyUserScreen({super.key});
 
   @override
-  _CreateAccountState createState() => _CreateAccountState();
+  State<ModifyUserScreen> createState() => _ModifyUserScreenState();
 }
 
-class _CreateAccountState extends State<ModifyUserScreen> {
+class _ModifyUserScreenState extends State<ModifyUserScreen> {
   String groupValue = "Seller";
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -39,91 +36,97 @@ class _CreateAccountState extends State<ModifyUserScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    ProfileController profileController = Get.find();
+  void initState() {
     _userController.text = profileController.user.value.username.toString();
     _lastController.text = profileController.user.value.lastName.toString();
     _firstController.text = profileController.user.value.firstName.toString();
     _phoneController.text = profileController.user.value.phone.toString();
+    super.initState();
+  }
 
+  ProfileController profileController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: TColors.primary,
-        appBar: AppBar(),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(TSizes.defaultSpace),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Modify user",
-                  style: Theme.of(context).textTheme.headlineMedium,
+      backgroundColor: TColors.primary,
+      appBar: AppBar(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(TSizes.defaultSpace),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Modify user",
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              const SizedBox(
+                height: 38,
+              ),
+              Form(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 24),
+                    TextFormField(
+                      //expands: false,
+                      controller: _firstController,
+                      expands: false,
+                      decoration: const InputDecoration(
+                        prefixIcon:
+                            Icon(Iconsax.user, color: TColors.secondary),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    TextFormField(
+                      expands: false,
+                      controller: _lastController,
+                      decoration: const InputDecoration(
+                        prefixIcon:
+                            Icon(Iconsax.user, color: TColors.secondary),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    TextFormField(
+                      //expands: false,
+                      controller: _userController,
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        prefixIcon:
+                            Icon(Iconsax.user_edit, color: TColors.secondary),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    TextFormField(
+                      expands: false,
+                      controller: _phoneController,
+                      decoration: const InputDecoration(
+                        prefixIcon:
+                            Icon(Iconsax.call, color: TColors.secondary),
+                      ),
+                    ),
+                    const SizedBox(height: 58),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _modify();
+                        },
+                        child: const Text('Modify user'),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 38,
-                ),
-                Form(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 24),
-                      TextFormField(
-                        //expands: false,
-                        controller: _firstController,
-                        expands: false,
-                        decoration: const InputDecoration(
-                          prefixIcon:
-                              Icon(Iconsax.user, color: TColors.secondary),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      TextFormField(
-                        expands: false,
-                        controller: _lastController,
-                        decoration: const InputDecoration(
-                          prefixIcon:
-                              Icon(Iconsax.user, color: TColors.secondary),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      TextFormField(
-                        //expands: false,
-                        controller: _userController,
-                        readOnly: true,
-                        decoration: const InputDecoration(
-                          prefixIcon:
-                              Icon(Iconsax.user_edit, color: TColors.secondary),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      TextFormField(
-                        expands: false,
-                        controller: _phoneController,
-                        decoration: const InputDecoration(
-                          prefixIcon:
-                              Icon(Iconsax.call, color: TColors.secondary),
-                        ),
-                      ),
-                      const SizedBox(height: 58),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _modify();
-                          },
-                          child: const Text('Modify user'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 28,
-                ),
-                const SizedBox(height: 14),
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: 28,
+              ),
+              const SizedBox(height: 14),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Future _modify() async {
@@ -134,37 +137,31 @@ class _CreateAccountState extends State<ModifyUserScreen> {
     String phone = _phoneController.text;
 
     Map<String, dynamic> userDetail = {
-      'uid': user,
-      'firstname': firstname,
-      'lastname': lastname,
+      'firstName': firstname,
+      'lastName': lastname,
+      'username': username,
       'phone': phone,
     };
+
+    profileController.user.update((val) {
+      val!.firstName = firstname;
+      val.lastName = lastname;
+      val.username = username;
+      val.phone = phone;
+    });
+
     CollectionReference collectionReference =
         FirebaseFirestore.instance.collection('userDetail');
-    collectionReference.doc(username).update(userDetail).then(
-        (value) => log('succesfully modify'),
-        onError: (e) => log("error type $e"));
-    _showDialogAlert(context);
-  }
-
-  void _showDialogAlert(BuildContext Context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            backgroundColor: Colors.amberAccent,
-            title: const Text('Modify State Alert'),
-            content:
-                const Text('Your profile has been updated, you need to log in'),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
-                    Get.offAll(() => LoginScreen());
-                  },
-                  child: const Text(TTexts.tContinue))
-            ],
-          );
-        });
+    collectionReference.doc(user).update(userDetail).then((value) {
+      Get.snackbar(
+        'Success',
+        'User modified successfully',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: TColors.white,
+        icon: const Icon(Icons.check, color: TColors.white),
+      );
+      log('succesfully modify');
+    }, onError: (e) => log("error type $e"));
   }
 }
