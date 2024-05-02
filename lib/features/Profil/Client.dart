@@ -10,7 +10,6 @@ import 'package:waffir/features/orders/client/screens/buyer_orders_screen.dart';
 import 'package:waffir/utils/constants/colors.dart';
 
 import '../authentification/screens/login/login.dart';
-import 'Geolocalisation.dart';
 import 'ModifyUserScreen.dart';
 
 class ProfileCompletionCard {
@@ -139,19 +138,7 @@ class _ClientState extends State<Client> {
                     ),
                   )
                 : Container(),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 15),
-              child: Card(
-                elevation: 4,
-                shadowColor: Colors.black12,
-                child: ListTile(
-                  leading: Icon(Icons.location_on_outlined),
-                  title: Text("Location"),
-                  trailing: Icon(Icons.chevron_right),
-                  onTap: _LocationTaped,
-                ),
-              ),
-            ),
+
             const Padding(
               padding: EdgeInsets.only(bottom: 15),
               child: Card(
@@ -185,11 +172,6 @@ class CustomListTile {
 
 List<CustomListTile> customListTiles = [
   CustomListTile(
-    icon: Icons.location_on_outlined,
-    title: "Location",
-    function: _LocationTaped(),
-  ),
-  CustomListTile(
     title: "Notifications",
     icon: CupertinoIcons.bell,
     function: _ModifyTaped(),
@@ -200,10 +182,6 @@ List<CustomListTile> customListTiles = [
     function: _signOut(),
   ),
 ];
-
-_LocationTaped() {
-  Get.to(() => const GeolocalisationScreen());
-}
 
 Future<void> _signOut() async {
   await FirebaseAuth.instance.signOut();

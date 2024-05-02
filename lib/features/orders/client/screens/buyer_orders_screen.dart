@@ -12,7 +12,8 @@ class BuyerOrdersScreen extends StatefulWidget {
 }
 
 class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> {
-  final buyerOrdersController = Get.put(OrderController());
+  final v = Get.put(OrderController());
+  final buyerOrdersController = Get.find<OrderController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

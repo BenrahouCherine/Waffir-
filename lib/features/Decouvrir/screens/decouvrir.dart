@@ -8,14 +8,21 @@ import 'package:waffir/common/widgets/products/vertical_product_card_view.dart';
 import 'package:waffir/common/widgets/texts/section_heading.dart';
 import 'package:waffir/features/addProduct/screens/AddProduct.dart';
 import 'package:waffir/features/decouvrir/controllers/decouvrir_controller.dart';
+import 'package:waffir/features/decouvrir/screens/search_component.dart';
 import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/sizes.dart';
 import 'package:waffir/utils/constants/text_strings.dart';
 
-class DecScreen extends StatelessWidget {
-  DecScreen({super.key});
+class DecScreen extends StatefulWidget {
+  const DecScreen({super.key});
 
+  @override
+  State<DecScreen> createState() => _DecScreenState();
+}
+
+class _DecScreenState extends State<DecScreen> {
   final decouvrirController = Get.put(DecouvrirController());
+  String searchQuery = "";
 
   @override
   Widget build(BuildContext context) {
@@ -83,14 +90,35 @@ class DecScreen extends StatelessWidget {
                 buttonTextColor: TColors.dark,
               ),
               const SizedBox(
-                height: TSizes.spaceBtwSections,
+                height: TSizes.spaceBtwSections / 3,
               ),
+              SearchComponent(
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value;
+                  });
+                },
+                padding: EdgeInsets.zero,
+              ),
+              const SizedBox(
+                height: TSizes.spaceBtwSections / 2,
+              ),
+              Obx(() {
+                final filteredProducts = decouvrirController.products
+                    .where((product) => product.name
+                        .toUpperCase()
+                        .contains(searchQuery.toUpperCase()))
+                    .toList();
 
-              Obx(() => GridViewVertical(
-                    itemCount: decouvrirController.products.length,
-                    itemBuilder: (_, index) => VerticalProductCardView(
-                        product: decouvrirController.products[index]),
-                  ))
+                return GridViewVertical(
+                  itemCount: filteredProducts.length,
+                  itemBuilder: (_, index) {
+                    return VerticalProductCardView(
+                      product: filteredProducts[index],
+                    );
+                  },
+                );
+              }),
 //const ProductCardVertical()
             ],
           ),

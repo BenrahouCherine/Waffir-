@@ -16,7 +16,7 @@
 - [x] order details for buyer and seller
 - [x] change the status of the order for the buyer
 - [x] fix order success screen and fail screen
-
-- [-] auth with google
-- [ ] add localization + map
+- [x] auth with google
+- [x] search products
 - [ ] notifications to the sellers
+- [ ] remember me
