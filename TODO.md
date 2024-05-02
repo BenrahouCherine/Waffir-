@@ -17,4 +17,6 @@
 - [ ] forgot password
 - [ ] add localization + map
 - [ ] notifications to the sellers
+- [ ] order details for buyer and seller
+- [ ] change the status of the order for the buyer
 - [ ] in profile for buyers make a section to see orders
