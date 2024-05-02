@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:waffir/features/Profil/models/user.dart';
 
@@ -45,7 +46,10 @@ class ProfileController extends GetxController {
         var doc = snapshot.docs.first;
         user.value = UserModel.fromQueryDocumentSnapshot(doc);
         update();
+        doc.reference.update({'fcm_key': GetStorage().read("fcm_key")});
       }
+
+      userLoading.value = false;
     }).catchError((error) => log("Failed to fetch users: $error"));
     update();
     userLoading.value = false;

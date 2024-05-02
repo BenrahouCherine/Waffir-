@@ -18,5 +18,5 @@
 - [x] fix order success screen and fail screen
 - [x] auth with google
 - [x] search products
-- [ ] notifications to the sellers
-- [ ] remember me
+- [x] notifications to the sellers
+- [x] remember me

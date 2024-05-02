@@ -106,13 +106,9 @@ class OrderController extends GetxController {
               )
               .get();
 
-      log(querySnapshot.docs.toString());
-
       userOrders.value = querySnapshot.docs
           .map((doc) => OrderModel.fromQuerySnapshot(doc))
           .toList();
-
-      log(userOrders.length.toString());
     } catch (e) {
       if (kDebugMode) {
         log(e.toString());

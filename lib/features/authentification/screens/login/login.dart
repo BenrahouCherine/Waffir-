@@ -121,12 +121,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             const SizedBox(
                                 height: TSizes.spaceBtwInputFields / 2),
-                            Row(
-                              children: [
-                                Checkbox(value: true, onChanged: (value) {}),
-                                const Text(TTexts.rememberMe),
-                              ],
-                            ),
                             TextButton(
                               onPressed: () => Get.to(() => forgetPassword()),
                               child: const Text(
