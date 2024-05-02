@@ -19,8 +19,8 @@ class VerticalProductCardView extends StatelessWidget {
 
   final ProductModel product;
 
-  final cartController = Get.put(CartController());
-  final favController = Get.put(FavController());
+  final cartController = Get.find<CartController>();
+  final favController = Get.find<FavController>();
 
   @override
   Widget build(BuildContext context) {
@@ -48,25 +48,25 @@ class VerticalProductCardView extends StatelessWidget {
                     applyImageRadius: true,
                     fit: BoxFit.cover,
                   ),
-                  Obx(
-                    () => Positioned(
-                      top: 0,
-                      right: 0,
-                      child: CircularIcon(
-                        icon: favController.favProducts.contains(product)
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color: Colors.red,
-                        onPressed: () {
-                          if (favController.favProducts.contains(product)) {
-                            favController.removeFavProduct(product);
-                          } else {
-                            favController.addFavProduct(product);
-                          }
-                        },
-                      ),
-                    ),
-                  )
+                  Obx(() => Positioned(
+                        top: 0,
+                        right: 0,
+                        child: CircularIcon(
+                          icon: favController.favProducts.any(
+                                  (favProduct) => favProduct.uid == product.uid)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: Colors.red,
+                          onPressed: () {
+                            if (favController.favProducts.any((favProduct) =>
+                                favProduct.uid == product.uid)) {
+                              favController.removeFavProduct(product);
+                            } else {
+                              favController.addFavProduct(product);
+                            }
+                          },
+                        ),
+                      )),
                 ],
               ),
             ),
