@@ -12,11 +12,10 @@
 - [x] form validation check for all the inputs and make the inputs accessible according to their nature (email ...)
 - [x] process checkout
 - [x] show orders for sellers
+- [x] in profile for buyers make a section to see orders
+- [x] order details for buyer and seller
+- [x] change the status of the order for the buyer
+- [x] fix order success screen and fail screen
 - [-] auth with google
-- [-] fix order success screen and fail screen
-- [ ] forgot password
 - [ ] add localization + map
 - [ ] notifications to the sellers
-- [ ] order details for buyer and seller
-- [ ] change the status of the order for the buyer
-- [ ] in profile for buyers make a section to see orders

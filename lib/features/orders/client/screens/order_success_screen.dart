@@ -45,23 +45,29 @@ class _SuccessScreenState extends State<OrderSuccessScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
-                  'Merci pour votre commande!',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                const Text(
-                  'Votre commande est en cours de traitement',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
+                const Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        'Merci pour votre commande!',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2,
+                      ),
+                      Text(
+                        'Votre commande est en cours de traitement',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(

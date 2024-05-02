@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:waffir/features/orders/client/models/order.dart';
+import 'package:waffir/features/orders/vendor/screens/order_details_screen.dart';
 
 class OrderCard extends StatelessWidget {
-  const OrderCard({
-    super.key,
-    required this.order,
-    required this.onTap,
-  });
+  const OrderCard({super.key, required this.order, required this.isSeller});
 
   final OrderModel order;
-  final Function(String) onTap;
+  final bool isSeller;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onTap(order.uid!);
+        isSeller == true
+            ? Get.to(() => OrderDetailsScreen(order: order))
+            : null;
       },
       child: Container(
         padding: const EdgeInsets.all(12.0),
@@ -92,6 +91,14 @@ class OrderCard extends StatelessWidget {
                 ),
               ),
             const SizedBox(height: 16),
+            Row(
+              children: [
+                const Icon(Icons.phone_outlined, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                Text(order.buyer!.phone),
+              ],
+            ),
+            const SizedBox(height: 8),
             SizedBox(
               child: Row(
                 children: [
@@ -109,6 +116,22 @@ class OrderCard extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                const Icon(Iconsax.status, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  order.status,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600),
+                )
+              ],
             ),
             const SizedBox(height: 20),
             SizedBox(

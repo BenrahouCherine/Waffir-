@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waffir/features/orders/vendor/controllers/vendor_orders_controller.dart';
@@ -34,10 +32,9 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
                   itemCount: vendorOrdersController.vendorOrders.length,
                   itemBuilder: (context, index) {
                     return OrderCard(
-                        order: vendorOrdersController.vendorOrders[index],
-                        onTap: (orderId) {
-                          log(orderId);
-                        });
+                      isSeller: true,
+                      order: vendorOrdersController.vendorOrders[index],
+                    );
                   },
                 ),
               );

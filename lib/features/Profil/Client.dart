@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:waffir/common/widgets/appbar/app_bar.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
+import 'package:waffir/features/orders/client/screens/buyer_orders_screen.dart';
 import 'package:waffir/utils/constants/colors.dart';
 
 import '../authentification/screens/login/login.dart';
@@ -123,6 +124,21 @@ class _ClientState extends State<Client> {
                 ),
               ),
             ),
+            profileController.user.value.userNature == 'Buyer'
+                ? const Padding(
+                    padding: EdgeInsets.only(bottom: 15),
+                    child: Card(
+                      elevation: 4,
+                      shadowColor: Colors.black12,
+                      child: ListTile(
+                        leading: Icon(Icons.delivery_dining_outlined),
+                        title: Text("Orders"),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: _OrdersTaped,
+                      ),
+                    ),
+                  )
+                : Container(),
             const Padding(
               padding: EdgeInsets.only(bottom: 15),
               child: Card(
@@ -149,26 +165,6 @@ class _ClientState extends State<Client> {
                 ),
               ),
             ),
-            // List.generate(
-            //     customListTiles.length,
-            //         (index) {
-            //       final tile = customListTiles[index];
-            //       return Padding(
-            //         padding: const EdgeInsets.only(bottom: 15),
-            //         child: Card(
-            //           elevation: 4,
-            //           shadowColor: Colors.black12,
-            //           child: ListTile(
-            //             leading: Icon(tile.icon),
-            //             title: Text(tile.title),
-            //             trailing: const Icon(Icons.chevron_right),
-            //             onTap: tile.function,
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // const SizedBox(height: 35),
           ],
         );
       }),
@@ -221,4 +217,8 @@ _logout() {
 
 _ModifyTaped() {
   Get.to(() => const ModifyUserScreen());
+}
+
+_OrdersTaped() {
+  Get.to(() => const BuyerOrdersScreen());
 }

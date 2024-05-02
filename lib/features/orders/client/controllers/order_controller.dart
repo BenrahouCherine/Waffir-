@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
@@ -18,6 +19,12 @@ class OrderController extends GetxController {
   ProfileController authController = Get.find<ProfileController>();
   RxList<OrderModel> userOrders = <OrderModel>[].obs;
   RxBool isLoading = false.obs;
+
+  @override
+  void onInit() {
+    fetchUserOrders();
+    super.onInit();
+  }
 
   @override
   void onClose() {
@@ -95,13 +102,17 @@ class OrderController extends GetxController {
               .collection('orders')
               .where(
                 'buyer_uid',
-                isEqualTo: authController.user.value.uid,
+                isEqualTo: FirebaseAuth.instance.currentUser!.uid,
               )
               .get();
+
+      log(querySnapshot.docs.toString());
 
       userOrders.value = querySnapshot.docs
           .map((doc) => OrderModel.fromQuerySnapshot(doc))
           .toList();
+
+      log(userOrders.length.toString());
     } catch (e) {
       if (kDebugMode) {
         log(e.toString());

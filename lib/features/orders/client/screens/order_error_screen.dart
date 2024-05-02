@@ -25,21 +25,27 @@ class _OrderErrorScreenState extends State<OrderErrorScreen> {
             const SizedBox(
               height: 10,
             ),
-            const Text(
-              'Une erreur s\'est produite lors de la passation de la commande!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 2,
-            ),
-            const Text(
-              'Veuillez réessayer plus tard',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
+            const Center(
+              child: Column(
+                children: [
+                  Text(
+                    'Une erreur s\'est produite lors de la passation de la commande!',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 2,
+                  ),
+                  Text(
+                    'Veuillez réessayer plus tard',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(
