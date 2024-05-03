@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/nos_vendeurs/controller/discover_vendors_controller.dart';
 import 'package:waffir/features/Profil/models/user.dart';
-import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/features/map/services/geolocation_service.dart';
 
 class MapController extends GetxController {
@@ -44,6 +42,7 @@ class MapController extends GetxController {
   Future setMarkersOfVendors() async {
     try {
       isLoading.value = true;
+      await discoverVendorController.fetchVendors();
       var vendors = discoverVendorController.vendors;
       for (UserModel vendor in vendors) {
         markers.add(Marker(
@@ -65,25 +64,11 @@ class MapController extends GetxController {
     }
   }
 
-  Future<List<Location>> getLatLongFromAddress(String address) async {
-    try {
-      List<Location> locations = await locationFromAddress(address);
-      return locations;
-    } catch (e) {
-      printError(info: e.toString());
-      return [];
-    }
-  }
-
   @override
   void onInit() {
-    super.onInit();
     initialize();
     setMarkersOfVendors();
-    ever(Get.find<ProfileController>().user, (value) {
-      setMarkersOfVendors();
-      initialize();
-    });
+    super.onInit();
   }
 
   @override

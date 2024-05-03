@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -10,15 +8,6 @@ class DiscoverVendorsController extends GetxController {
   RxBool isLoading = false.obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  @override
-  void onInit() {
-    fetchVendors();
-    ever(vendors, (_) {
-      log("Vendors: ${vendors.length}");
-    });
-    super.onInit();
-  }
 
   Future<int> countProducts(String vendorId) async {
     try {
@@ -37,6 +26,7 @@ class DiscoverVendorsController extends GetxController {
 
   Future fetchVendors() async {
     try {
+      vendors.clear();
       isLoading.value = true;
       QuerySnapshot querySnapshot = await firestore
           .collection("userDetail")
@@ -47,7 +37,6 @@ class DiscoverVendorsController extends GetxController {
         UserModel vendor = UserModel.fromQueryDocumentSnapshot(doc);
         vendor.productsCount = await countProducts(vendor.uid);
         vendors.add(vendor);
-        log(vendor.firstName);
       }
     } catch (e) {
       if (kDebugMode) {

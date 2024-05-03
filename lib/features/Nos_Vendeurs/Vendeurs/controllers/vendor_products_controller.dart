@@ -58,6 +58,7 @@ class VendorProductsController extends GetxController {
 
   Future modifyProduct(ProductModel product) async {
     try {
+      isLoading.value = true;
       await firestore
           .collection('product')
           .doc(product.uid)
@@ -72,11 +73,14 @@ class VendorProductsController extends GetxController {
       if (kDebugMode) {
         print("Failed to modify product: $e");
       }
+    } finally {
+      isLoading.value = false;
     }
   }
 
   Future<String?> uploadImage(File imageFile, String productId) async {
     try {
+      isLoading.value = true;
       Reference storageReference =
           FirebaseStorage.instance.ref().child('product_images/$productId');
 
@@ -90,6 +94,8 @@ class VendorProductsController extends GetxController {
       if (kDebugMode) {
         print("Failed to upload image: $e");
       }
+    } finally {
+      isLoading.value = false;
     }
     return null;
   }

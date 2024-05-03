@@ -249,18 +249,22 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       onPressed: () async {
                         Get.dialog(
                           AlertDialog(
-                            title: const Text('Confirmation'),
+                            title: const Text('Confirmation',
+                                style: TextStyle(color: Colors.black)),
                             content: const Text(
-                                'Are you sure you want to delete this order?'),
+                                'Are you sure you want to delete this order?',
+                                style: TextStyle(color: Colors.black)),
                             actions: <Widget>[
                               TextButton(
-                                child: const Text('Cancel'),
+                                child: const Text('Cancel',
+                                    style: TextStyle(color: Colors.black)),
                                 onPressed: () {
                                   Get.back();
                                 },
                               ),
                               TextButton(
-                                child: const Text('Delete'),
+                                child: const Text('Delete',
+                                    style: TextStyle(color: Colors.red)),
                                 onPressed: () async {
                                   await vendorController
                                       .deleteOrder(widget.order.uid!);

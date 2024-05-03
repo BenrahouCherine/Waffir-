@@ -28,18 +28,22 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
             ? const Center(child: CircularProgressIndicator())
             : Container(
                 padding: const EdgeInsets.all(8.0),
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 10,
-                  ),
-                  itemCount: vendorOrdersController.vendorOrders.length,
-                  itemBuilder: (context, index) {
-                    return OrderCard(
-                      isSeller: true,
-                      order: vendorOrdersController.vendorOrders[index],
-                    );
-                  },
-                ),
+                child: vendorOrdersController.vendorOrders.isEmpty
+                    ? const Center(
+                        child: Text("Pas de commandes pour l'instant"),
+                      )
+                    : ListView.separated(
+                        separatorBuilder: (context, index) => const SizedBox(
+                          height: 10,
+                        ),
+                        itemCount: vendorOrdersController.vendorOrders.length,
+                        itemBuilder: (context, index) {
+                          return OrderCard(
+                            isSeller: true,
+                            order: vendorOrdersController.vendorOrders[index],
+                          );
+                        },
+                      ),
               );
       }),
     );

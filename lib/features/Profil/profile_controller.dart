@@ -142,8 +142,32 @@ class ProfileController extends GetxController {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
 
-      await getUser(auth.currentUser!.uid);
-      Get.offAll(() => NavigationMenu());
+      if (auth.currentUser?.emailVerified == false) {
+        await auth.signOut();
+        Get.snackbar(
+          'Error',
+          'Please verify your email first.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          icon: const Icon(Icons.error_outline_rounded, color: Colors.white),
+        );
+        return;
+      } else {
+        await getUser(auth.currentUser!.uid);
+        Get.snackbar(
+          'Success',
+          'Signed in successfully.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          icon: const Icon(
+            Icons.check_circle_outline_rounded,
+            color: Colors.white,
+          ),
+        );
+        Get.offAll(() => NavigationMenu());
+      }
     } catch (e) {
       log(e.toString());
       Get.snackbar(

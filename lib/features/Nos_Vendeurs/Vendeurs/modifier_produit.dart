@@ -209,60 +209,117 @@ class _ModifierProductScreenState extends State<ModifierProductScreen> {
                       ],
                     ),
                     const SizedBox(height: 28),
+
                     SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            String category = _chosenCategory.toString();
-                            String description = _descController.text;
-                            String price = _priceController.text;
-                            String name = _nameController.text;
-                            String quantity = _quantityController.text;
-                            if (_formKey.currentState!.validate()) {
-                              if (imgsrc == null ||
-                                  imgsrc == widget.product.img) {
-                                // Keep the current image
-                                ProductModel product = ProductModel(
-                                  market: widget.product.market,
-                                  category: category,
-                                  description: description,
-                                  img: widget.product.img,
-                                  name: name,
-                                  price: int.parse(price),
-                                  quantity: quantity,
-                                  sellerUid: selledUid,
-                                  uid: widget.product.uid,
-                                );
-                                await vendorController.modifyProduct(product);
-                              } else {
-                                // Upload the new image
-                                String? photo =
-                                    await vendorController.uploadImage(
-                                        File(imgsrc!), widget.product.uid!);
-                                ProductModel product = ProductModel(
-                                  market: widget.product.market,
-                                  category: category,
-                                  description: description,
-                                  img: photo!,
-                                  name: name,
-                                  price: int.parse(price),
-                                  quantity: quantity,
-                                  sellerUid: selledUid,
-                                  uid: widget.product.uid,
-                                );
-                                await vendorController.modifyProduct(product);
+                      height: 60,
+                      width: double.infinity,
+                      child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.orange),
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          overlayColor:
+                              MaterialStateProperty.resolveWith<Color?>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.hovered)) {
+                                return Colors.orange.withOpacity(0.04);
                               }
-                            } else {
-                              Get.snackbar(
-                                "Erreur",
-                                "Veuillez ajouter une image",
-                                backgroundColor: Colors.red,
-                                dismissDirection: DismissDirection.horizontal,
+                              if (states.contains(MaterialState.focused) ||
+                                  states.contains(MaterialState.pressed)) {
+                                return Colors.orange.withOpacity(0.12);
+                              }
+                              return null;
+                            },
+                          ),
+                          padding:
+                              MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            const EdgeInsets.all(14.0),
+                          ),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                        onPressed: () async {
+                          String category = _chosenCategory.toString();
+                          String description = _descController.text;
+                          String price = _priceController.text;
+                          String name = _nameController.text;
+                          String quantity = _quantityController.text;
+                          if (_formKey.currentState!.validate()) {
+                            if (imgsrc == null ||
+                                imgsrc == widget.product.img) {
+                              // Keep the current image
+                              ProductModel product = ProductModel(
+                                market: widget.product.market,
+                                category: category,
+                                description: description,
+                                img: widget.product.img,
+                                name: name,
+                                price: int.parse(price),
+                                quantity: quantity,
+                                sellerUid: selledUid,
+                                uid: widget.product.uid,
                               );
+                              await vendorController.modifyProduct(product);
+                            } else {
+                              // Upload the new image
+                              String? photo =
+                                  await vendorController.uploadImage(
+                                      File(imgsrc!), widget.product.uid!);
+                              ProductModel product = ProductModel(
+                                market: widget.product.market,
+                                category: category,
+                                description: description,
+                                img: photo!,
+                                name: name,
+                                price: int.parse(price),
+                                quantity: quantity,
+                                sellerUid: selledUid,
+                                uid: widget.product.uid,
+                              );
+                              await vendorController.modifyProduct(product);
                             }
-                          },
-                          child: const Text('Modifier le produit'),
-                        ))
+                          } else {
+                            Get.snackbar(
+                              "Erreur",
+                              "Veuillez ajouter une image",
+                              backgroundColor: Colors.red,
+                              dismissDirection: DismissDirection.horizontal,
+                            );
+                          }
+                        },
+                        child: Obx(() {
+                          return vendorController.isLoading.value
+                              ? const SizedBox(
+                                  height: 25,
+                                  width: 25,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 3,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Modifier le produit',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Icon(Icons.arrow_forward_ios, size: 16),
+                                  ],
+                                );
+                        }),
+                      ),
+                    ),
                   ],
                 ),
               ),

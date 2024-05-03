@@ -161,7 +161,6 @@ class _ModifyUserScreenState extends State<ModifyUserScreen> {
         colorText: TColors.white,
         icon: const Icon(Icons.check, color: TColors.white),
       );
-      log('succesfully modify');
     }, onError: (e) => log("error type $e"));
   }
 }

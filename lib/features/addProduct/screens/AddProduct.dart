@@ -193,9 +193,40 @@ class _AddProductState extends State<AddProduct> {
                       ],
                     ),
                     const SizedBox(height: 28),
+
                     SizedBox(
+                      height: 60,
                       width: double.infinity,
-                      child: ElevatedButton(
+                      child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.orange),
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          overlayColor:
+                              MaterialStateProperty.resolveWith<Color?>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.hovered)) {
+                                return Colors.orange.withOpacity(0.04);
+                              }
+                              if (states.contains(MaterialState.focused) ||
+                                  states.contains(MaterialState.pressed)) {
+                                return Colors.orange.withOpacity(0.12);
+                              }
+                              return null;
+                            },
+                          ),
+                          padding:
+                              MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            const EdgeInsets.all(14.0),
+                          ),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        ),
                         onPressed: () async {
                           String category = _chosenCategory.toString();
                           String description = _descController.text;
@@ -234,9 +265,34 @@ class _AddProductState extends State<AddProduct> {
                             await addProductController.addProduct();
                           }
                         },
-                        child: const Text('Ajouter un produit'),
+                        child: Obx(() {
+                          return addProductController.isLoading.value
+                              ? const SizedBox(
+                                  height: 25,
+                                  width: 25,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 3,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Créer le produit',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Icon(Icons.arrow_forward_ios, size: 16),
+                                  ],
+                                );
+                        }),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -248,18 +304,6 @@ class _AddProductState extends State<AddProduct> {
         ),
       ),
     );
-  }
-}
-
-class THomeCategories extends StatelessWidget {
-  const THomeCategories({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
   }
 }
 

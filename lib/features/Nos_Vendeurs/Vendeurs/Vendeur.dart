@@ -104,18 +104,29 @@ class Vend extends StatelessWidget {
                                 onPressed: () {
                                   Get.dialog(
                                     AlertDialog(
-                                      title: const Text('Confirm'),
+                                      title: const Text('Confirm',
+                                          style:
+                                              TextStyle(color: Colors.black)),
                                       content: const Text(
-                                          'Are you sure you want to delete this item?'),
+                                        'Are you sure you want to delete this item?',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
                                       actions: <Widget>[
                                         TextButton(
-                                          child: const Text('Cancel'),
+                                          child: const Text(
+                                            'Cancel',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
                                           onPressed: () {
                                             Get.back();
                                           },
                                         ),
                                         TextButton(
-                                          child: const Text('Delete'),
+                                          child: const Text(
+                                            'Delete',
+                                            style: TextStyle(color: Colors.red),
+                                          ),
                                           onPressed: () async {
                                             await vendorController
                                                 .deleteProduct(vendorController
