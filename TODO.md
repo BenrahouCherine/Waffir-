@@ -20,4 +20,7 @@
 - [x] search products
 - [x] notifications to the sellers
 - [x] remember me
-- [ ] modify user not working
+- [x] modify user not working
+- [ ] email validation
+- [ ] create account
+- [ ] keeping same account when login
