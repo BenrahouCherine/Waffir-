@@ -129,6 +129,7 @@ class _ModifierProductScreenState extends State<ModifierProductScreen> {
                     ),
                     const SizedBox(height: 14),
                     TextFormField(
+                      keyboardType: TextInputType.number,
                       expands: false,
                       controller: _priceController,
                       decoration: const InputDecoration(
@@ -145,6 +146,7 @@ class _ModifierProductScreenState extends State<ModifierProductScreen> {
                     ),
                     const SizedBox(height: 14),
                     TextFormField(
+                      keyboardType: TextInputType.number,
                       controller: _quantityController,
                       decoration: const InputDecoration(
                         labelText: TTexts.quantity,

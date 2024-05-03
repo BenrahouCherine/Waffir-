@@ -40,32 +40,41 @@ class _ClientState extends State<Client> {
               children: [
                 profileController.userLoading.value
                     ? const CircularProgressIndicator(color: Colors.yellow)
-                    : CircleAvatar(
-                        radius: 50,
-                        backgroundImage: profileController
-                                    .user.value.photoURL !=
-                                ''
-                            ? NetworkImage(profileController
-                                    .user.value.photoURL ??
-                                'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
-                            : const NetworkImage(
-                                    'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
-                                as ImageProvider,
-                        child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: IconButton(
-                              icon: const Icon(Icons.image_rounded),
-                              onPressed: () async {
-                                final XFile? image = await _picker.pickImage(
-                                    source: ImageSource.gallery);
-                                if (image != null) {
-                                  profileController.profilePicture.value =
-                                      XFile(image.path);
-                                  await profileController.setProfilePic();
-                                }
-                              },
-                            )),
-                      ),
+                    : ValueListenableBuilder(
+                        valueListenable: profileController.isUploading,
+                        builder: (context, isUploading, child) {
+                          if (isUploading) {
+                            return const CircularProgressIndicator(
+                                color: Colors.yellow);
+                          } else {
+                            return CircleAvatar(
+                              radius: 50,
+                              backgroundImage: profileController
+                                          .user.value.photoURL !=
+                                      ''
+                                  ? NetworkImage(profileController
+                                          .user.value.photoURL ??
+                                      'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
+                                  : const NetworkImage(
+                                          'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
+                                      as ImageProvider,
+                              child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.image_rounded),
+                                  onPressed: () async {
+                                    final XFile? image = await _picker
+                                        .pickImage(source: ImageSource.gallery);
+                                    if (image != null) {
+                                      profileController.profilePicture.value =
+                                          XFile(image.path);
+                                    }
+                                  },
+                                ),
+                              ),
+                            );
+                          }
+                        }),
                 const SizedBox(height: 40),
                 Text(
                   'Welcome ${profileController.user.value.firstName} ${profileController.user.value.lastName}',

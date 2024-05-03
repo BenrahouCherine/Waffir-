@@ -28,3 +28,4 @@
 - [x] filtrer par category
 - [x] email validation
 - [x] geolocalisation pour afficher les vendeurs
+- [ ] fix image upload isolate

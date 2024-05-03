@@ -7,8 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:waffir/features/Profil/ModifyUserScreen.dart';
 import 'package:waffir/features/Profil/models/user.dart';
 import 'package:waffir/features/authentification/screens/login/login.dart';
@@ -34,9 +34,13 @@ class ProfileController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseStorage storage = FirebaseStorage.instance;
   GeoLocationService geoLocationService = Get.find<GeoLocationService>();
+  ValueNotifier<bool> isUploading = ValueNotifier<bool>(false);
 
   @override
   void onInit() {
+    ever(profilePicture, (_) async {
+      await setProfilePic();
+    });
     auth.authStateChanges().listen((User? usr) {
       if (usr != null) {
         getUser(usr.uid);
@@ -182,28 +186,43 @@ class ProfileController extends GetxController {
   }
 
   Future<void> setProfilePic() async {
-    userLoading.value = true;
-    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference reference = storage.ref().child('profilePictures/$fileName');
-    UploadTask uploadTask = reference.putFile(
-      File(profilePicture.value!.path),
-    );
-    TaskSnapshot storageTaskSnapshot = await uploadTask;
-    String photoURL = await storageTaskSnapshot.ref.getDownloadURL();
-    // modify collection and add photo_URL
-    CollectionReference users = firestore.collection('userDetail');
-    final currentUser = auth.currentUser;
-    users
-        .where('uid', isEqualTo: currentUser?.uid.toString())
-        .get()
-        .then((QuerySnapshot snapshot) {
-      if (snapshot.docs.isNotEmpty) {
-        var doc = snapshot.docs.first;
-        doc.reference.update({'photo_URL': photoURL});
-      }
-      getUser(currentUser!.uid);
+    try {
+      isUploading.value = true;
+      userLoading.value = true;
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference reference = storage.ref().child('profilePictures/$fileName');
+
+      // Compress the image
+      final filePath = profilePicture.value!.path;
+      final outputPath = File('$filePath.jpg').path;
+      await FlutterImageCompress.compressAndGetFile(
+        filePath,
+        outputPath,
+        quality: 75,
+      );
+
+      UploadTask uploadTask = reference.putFile(File(outputPath));
+      TaskSnapshot storageTaskSnapshot = await uploadTask;
+      String photoURL = await storageTaskSnapshot.ref.getDownloadURL();
+      // modify collection and add photo_URL
+      CollectionReference users = firestore.collection('userDetail');
+      final currentUser = auth.currentUser;
+      users
+          .where('uid', isEqualTo: currentUser?.uid.toString())
+          .get()
+          .then((QuerySnapshot snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          var doc = snapshot.docs.first;
+          doc.reference.update({'photo_URL': photoURL});
+        }
+        getUser(currentUser!.uid);
+      });
+    } catch (e) {
+      log(e.toString());
+    } finally {
       userLoading.value = false;
-    }).catchError((error) => log("Failed to fetch users: $error"));
+      isUploading.value = false;
+    }
   }
 
   Future signOut() async {

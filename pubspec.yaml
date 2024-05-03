@@ -35,6 +35,8 @@ dependencies:
   geolocator: ^11.0.0
   geocoding: ^3.0.0
   google_maps_flutter: ^2.6.0
+  flutter_image_compress: ^2.2.0
+  image: ^3.0.2
 
 flutter_native_splash:
   color: "#0B622E"
