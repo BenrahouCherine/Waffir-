@@ -1,3 +1,5 @@
+- [x] add profile pic for users
+- [x] product creation
 - [x] check user registration
 - [x] fix logo quality
 - [x] add splash screen
@@ -21,7 +23,10 @@
 - [x] notifications to the sellers
 - [x] remember me
 - [x] modify user not working
+- [x] dark theme issues
 - [ ] email validation
+- [ ] buyer account infos not showing
 - [ ] create account
 - [ ] keeping same account when login
-- [ ] my products for seller in light mode phones
+- [ ] filtrer par category
+- [ ] geolocalisation pour afficher les vendeurs

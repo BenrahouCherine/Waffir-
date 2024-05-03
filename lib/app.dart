@@ -14,7 +14,6 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       theme: TAppTheme.lightTheme,
-      darkTheme: TAppTheme.darkTheme,
       home: const EntryPage(),
       initialBinding: AppBindings(),
     );

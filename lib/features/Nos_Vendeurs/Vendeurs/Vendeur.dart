@@ -49,6 +49,7 @@ class Vend extends StatelessWidget {
                 mainAxisSpacing: 10,
               ),
               itemBuilder: (context, index) => Card(
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -72,7 +73,7 @@ class Vend extends StatelessWidget {
                             vendorController.vendorProducts[index].name,
                             style: const TextStyle(
                               fontSize: 14,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -80,7 +81,7 @@ class Vend extends StatelessWidget {
                             "Price: ${vendorController.vendorProducts[index].price} DA",
                             style: const TextStyle(
                               fontSize: 15,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                           const SizedBox(height: 10),

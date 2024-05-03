@@ -1,16 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:waffir/common/widgets/appbar/app_bar.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
-import 'package:waffir/features/orders/client/screens/buyer_orders_screen.dart';
 import 'package:waffir/utils/constants/colors.dart';
-
-import '../authentification/screens/login/login.dart';
-import 'ModifyUserScreen.dart';
 
 class ProfileCompletionCard {
   final String title;
@@ -30,7 +24,7 @@ class Client extends StatefulWidget {
 }
 
 class _ClientState extends State<Client> {
-  ProfileController profileController = Get.find();
+  final profileController = Get.find<ProfileController>();
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -43,10 +37,10 @@ class _ClientState extends State<Client> {
                   .textTheme
                   .headlineMedium!
                   .apply(color: TColors.white)),
-          actions: const [
+          actions: [
             IconButton(
-              onPressed: _signOut,
-              icon: Icon(Icons.logout_rounded),
+              onPressed: () async => await profileController.signOut(),
+              icon: const Icon(Icons.logout_rounded),
             )
           ]),
       body: Obx(() {
@@ -69,8 +63,9 @@ class _ClientState extends State<Client> {
                         backgroundImage: profileController
                                     .user.value.photoURL !=
                                 ''
-                            ? NetworkImage(
-                                profileController.user.value.photoURL!)
+                            ? NetworkImage(profileController
+                                    .user.value.photoURL ??
+                                'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
                             : const NetworkImage(
                                     'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
                                 as ImageProvider,
@@ -110,45 +105,45 @@ class _ClientState extends State<Client> {
 
             const SizedBox(height: 40),
             const SizedBox(height: 75),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 15),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
               child: Card(
                 elevation: 4,
                 shadowColor: Colors.black12,
                 child: ListTile(
-                  leading: Icon(Icons.edit_outlined),
-                  title: Text("Modify account"),
-                  trailing: Icon(Icons.chevron_right),
-                  onTap: _ModifyTaped,
+                  leading: const Icon(Icons.edit_outlined),
+                  title: const Text("Modify account"),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => profileController.modifyTaped(),
                 ),
               ),
             ),
             profileController.user.value.userNature == 'Buyer'
-                ? const Padding(
-                    padding: EdgeInsets.only(bottom: 15),
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
                     child: Card(
                       elevation: 4,
                       shadowColor: Colors.black12,
                       child: ListTile(
-                        leading: Icon(Icons.delivery_dining_outlined),
-                        title: Text("Orders"),
-                        trailing: Icon(Icons.chevron_right),
-                        onTap: _OrdersTaped,
+                        leading: const Icon(Icons.delivery_dining_outlined),
+                        title: const Text("Orders"),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () => profileController.ordersTaped(),
                       ),
                     ),
                   )
                 : Container(),
 
-            const Padding(
-              padding: EdgeInsets.only(bottom: 15),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
               child: Card(
                 elevation: 4,
                 shadowColor: Colors.black12,
                 child: ListTile(
-                  leading: Icon(Icons.logout_outlined),
-                  title: Text("Log out"),
-                  trailing: Icon(Icons.chevron_right),
-                  onTap: _logout,
+                  leading: const Icon(Icons.logout_outlined),
+                  title: const Text("Log out"),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () async => await profileController.signOut(),
                 ),
               ),
             ),
@@ -157,46 +152,4 @@ class _ClientState extends State<Client> {
       }),
     );
   }
-}
-
-class CustomListTile {
-  final IconData icon;
-  final String title;
-  final function;
-  CustomListTile({
-    required this.icon,
-    required this.title,
-    required this.function,
-  });
-}
-
-List<CustomListTile> customListTiles = [
-  CustomListTile(
-    title: "Notifications",
-    icon: CupertinoIcons.bell,
-    function: _ModifyTaped(),
-  ),
-  CustomListTile(
-    title: "Logout",
-    icon: CupertinoIcons.arrow_right_arrow_left,
-    function: _signOut(),
-  ),
-];
-
-Future<void> _signOut() async {
-  await FirebaseAuth.instance.signOut();
-  Get.offAll(() => LoginScreen());
-}
-
-_logout() {
-  FirebaseAuth.instance.signOut();
-  Get.offAll(() => LoginScreen());
-}
-
-_ModifyTaped() {
-  Get.to(() => const ModifyUserScreen());
-}
-
-_OrdersTaped() {
-  Get.to(() => const BuyerOrdersScreen());
 }

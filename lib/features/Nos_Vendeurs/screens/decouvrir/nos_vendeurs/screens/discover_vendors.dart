@@ -9,10 +9,10 @@ import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/sizes.dart';
 
 class DiscoverVendorsScreen extends StatefulWidget {
-  const DiscoverVendorsScreen({Key? key}) : super(key: key);
+  const DiscoverVendorsScreen({super.key});
 
   @override
-  _DiscoverVendorsScreenState createState() => _DiscoverVendorsScreenState();
+  State<DiscoverVendorsScreen> createState() => _DiscoverVendorsScreenState();
 }
 
 class _DiscoverVendorsScreenState extends State<DiscoverVendorsScreen> {
@@ -59,33 +59,42 @@ class _DiscoverVendorsScreenState extends State<DiscoverVendorsScreen> {
               const SizedBox(
                 height: TSizes.spaceBtwItems / 1.5,
               ),
-              GridView.builder(
-                itemCount: controller.vendors
-                    .where((vendor) =>
-                        vendor.firstName.contains(searchQuery) ||
-                        vendor.lastName.contains(searchQuery))
-                    .length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  crossAxisSpacing: 4.0,
-                  mainAxisSpacing: 4.0,
-                  childAspectRatio: 3.5,
-                ),
-                itemBuilder: (_, index) {
-                  var filteredVendors = controller.vendors
-                      .where((vendor) =>
-                          vendor.firstName.contains(searchQuery) ||
-                          vendor.lastName.contains(searchQuery))
-                      .toList();
+              Obx(
+                () => controller.isLoading.value
+                    ? const Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: CircularProgressIndicator(
+                          color: Colors.yellow,
+                        ),
+                      )
+                    : ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            height: TSizes.spaceBtwItems,
+                          );
+                        },
+                        itemCount: controller.vendors
+                            .where((vendor) =>
+                                vendor.firstName.contains(searchQuery) ||
+                                vendor.lastName.contains(searchQuery))
+                            .length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (_, index) {
+                          var filteredVendors = controller.vendors
+                              .where((vendor) =>
+                                  vendor.firstName.contains(searchQuery) ||
+                                  vendor.lastName.contains(searchQuery))
+                              .toList();
 
-                  return VendorCard(
-                    vendor: filteredVendors[index],
-                    numberOfProducts: filteredVendors[index].productsCount ?? 0,
-                  );
-                },
-              )
+                          return VendorCard(
+                            vendor: filteredVendors[index],
+                            numberOfProducts:
+                                filteredVendors[index].productsCount ?? 0,
+                          );
+                        },
+                      ),
+              ),
             ],
           ),
         ),

@@ -14,10 +14,10 @@ import 'package:waffir/utils/constants/text_strings.dart';
 import 'verify_email.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
   @override
-  _CreateAccountState createState() => _CreateAccountState();
+  State<SignupScreen> createState() => _CreateAccountState();
 }
 
 class _CreateAccountState extends State<SignupScreen> {

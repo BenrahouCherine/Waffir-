@@ -30,7 +30,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Détails de la commande"),
+        title: const Text(
+          "Détails de la commande",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       backgroundColor: TColors.primary,
       body: Padding(
@@ -157,9 +160,18 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        title: Text(orderItem.product.name),
-                        subtitle: Text("Quantité : ${orderItem.quantity}"),
-                        trailing: Text("${orderItem.product.price} DA"),
+                        title: Text(
+                          orderItem.product.name,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        subtitle: Text(
+                          "Quantité : ${orderItem.quantity}",
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        trailing: Text(
+                          "${orderItem.product.price} DA",
+                          style: const TextStyle(color: Colors.white),
+                        ),
                       ),
                   ],
                 )),
@@ -190,9 +202,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     height: 6,
                   ),
                   DropdownButton<String>(
+                    dropdownColor: Colors.black,
                     isExpanded: true,
                     value: status,
-                    style: const TextStyle(color: Colors.white),
                     onChanged: (String? newValue) {
                       setState(() {
                         status = newValue!;

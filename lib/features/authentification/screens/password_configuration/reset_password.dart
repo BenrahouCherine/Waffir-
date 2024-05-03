@@ -54,7 +54,7 @@ class ResetPassword extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                    onPressed: () => Get.to(() => LoginScreen()),
+                    onPressed: () => Get.to(() => const LoginScreen()),
                     child: const Text(TTexts.done)),
               ),
               const SizedBox(

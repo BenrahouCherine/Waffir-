@@ -18,7 +18,10 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
     return Scaffold(
       backgroundColor: TColors.primary,
       appBar: AppBar(
-        title: const Text('Commandes'),
+        title: const Text(
+          'Commandes',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Obx(() {
         return vendorOrdersController.isLoading.value

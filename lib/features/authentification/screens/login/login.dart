@@ -1,17 +1,13 @@
 // ignore_for_file: avoid_print, no_leading_underscores_for_local_identifiers
 
-import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:waffir/common/styles/spacing_styles.dart';
+import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/features/authentification/controllers/oauth_controller.dart';
 import 'package:waffir/features/authentification/screens/password_configuration/forget_password.dart';
 import 'package:waffir/features/authentification/screens/signup.widgets/signup.dart';
-import 'package:waffir/model/firebase_service.dart';
-import 'package:waffir/navigation_menu.dart';
 import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/image_strings.dart';
 import 'package:waffir/utils/constants/sizes.dart';
@@ -28,9 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FirebaseAuthService _auth = FirebaseAuthService();
   bool _hidden = true;
-
+  final authController = Get.find<ProfileController>();
   OauthController oauthController = Get.put(OauthController());
 
   @override
@@ -55,9 +50,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: TSizes.lg),
                       Text(
                         TTexts.loginTitle,
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            color: TColors
-                                .secondary), // Remplacez `Colors.red` par la couleur de votre choix
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(color: TColors.secondary),
                       ),
                       const SizedBox(height: TSizes.sm),
                       Text(
@@ -122,7 +118,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(
                                 height: TSizes.spaceBtwInputFields / 2),
                             TextButton(
-                              onPressed: () => Get.to(() => forgetPassword()),
+                              onPressed: () =>
+                                  Get.to(() => const ForgetPassword()),
                               child: const Text(
                                 TTexts.forgetPassword,
                                 style: TextStyle(
@@ -136,7 +133,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: ElevatedButton(
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
-                                        await _signIn();
+                                        await authController.signIn(
+                                            _emailController.text,
+                                            _passwordController.text);
                                       }
                                     },
                                     child: const Text(TTexts.signIn))),
@@ -194,25 +193,5 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               )),
         ));
-  }
-
-  Future _signIn() async {
-    String password = _passwordController.text;
-    String email = _emailController.text;
-    User? _user = await _auth.signInWithEmailAndPassword(email, password);
-
-    if (_user != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.offAll(() => NavigationMenu());
-      });
-    }
-  }
-
-  void inContact(TapDownDetails details) {
-    _hidden = false;
-  }
-
-  void outContact(TapUpDetails details) {
-    _hidden = true;
   }
 }

@@ -58,7 +58,10 @@ class _ModifierProductScreenState extends State<ModifierProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Modifier le produit'),
+        title: const Text(
+          'Modifier le produit',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       backgroundColor: TColors.primary,
       body: SingleChildScrollView(
@@ -72,6 +75,7 @@ class _ModifierProductScreenState extends State<ModifierProductScreen> {
                 child: Column(
                   children: [
                     DropdownButton<String>(
+                      dropdownColor: Colors.black,
                       isExpanded: true,
                       value: _chosenCategory,
                       items: <String>[

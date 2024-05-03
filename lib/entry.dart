@@ -19,7 +19,7 @@ class _EntryPageState extends State<EntryPage> {
   final _auth = FirebaseAuth.instance;
   final box = GetStorage();
   bool isIntroShown = false;
-  final profileController = Get.put(ProfileController());
+  final profileController = Get.find<ProfileController>();
 
   void _removeSplashScreen() async {
     await Future.delayed(const Duration(seconds: 2));
@@ -42,7 +42,7 @@ class _EntryPageState extends State<EntryPage> {
           final User? user = snapshot.data;
           if (user == null) {
             if (isIntroShown) {
-              Future.microtask(() => Get.offAll(() => LoginScreen()));
+              Future.microtask(() => Get.offAll(() => const LoginScreen()));
             } else {
               Future.microtask(
                   () => Get.offAll(() => const OnBoardingScreen()));

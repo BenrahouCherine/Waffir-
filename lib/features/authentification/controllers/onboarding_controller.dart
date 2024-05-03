@@ -19,13 +19,13 @@ class OnBoardingController extends GetxController {
     pageController.jumpTo(index);
   }
 
-  void NextPage() {
+  void nextPage() {
     if (currentPageIndex.value == 2) {
       if (FirebaseAuth.instance.currentUser != null) {
         Get.offAll(() => NavigationMenu());
         box.write("isIntroShown", true);
       } else {
-        Get.offAll(() => LoginScreen());
+        Get.offAll(() => const LoginScreen());
         box.write("isIntroShown", true);
       }
     } else {
@@ -39,7 +39,7 @@ class OnBoardingController extends GetxController {
       Get.offAll(() => NavigationMenu());
       box.write("isIntroShown", true);
     } else {
-      Get.offAll(() => LoginScreen());
+      Get.offAll(() => const LoginScreen());
       box.write("isIntroShown", true);
     }
   }

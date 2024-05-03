@@ -20,8 +20,6 @@ class ProductCardVertical extends StatelessWidget {
       onTap: () {},
       child: Container(
         width: 180,
-        //height: 100,
-        //padding: const EdgeInsets.all(1),
         decoration: BoxDecoration(
             boxShadow: [ShadowStyle.verticalProductShadow],
             borderRadius: BorderRadius.circular(TSizes.productImageRadius),
@@ -31,8 +29,6 @@ class ProductCardVertical extends StatelessWidget {
             const RoundedContainer(
               padding: EdgeInsets.all(TSizes.sm),
               height: 180,
-              //width: 180,
-
               backgroundColor: TColors.light,
               child: Stack(
                 children: [
@@ -41,17 +37,6 @@ class ProductCardVertical extends StatelessWidget {
                     applyImageRadius: true,
                     fit: BoxFit.fill,
                   ),
-
-                  /// sale tage ??
-                  /* Positioned(
-                  //top : 12 ,
-                  child: RoundedContainer(
-                    radius: TSizes.sm,
-                    backgroundColor: TColors.secondary.withOpacity(0.8),
-                    padding: const EdgeInsets.symmetric(horizontal: TSizes.sm , vertical: TSizes.xs),
-                    child: Text ('25%' , style: Theme.of(context).textTheme.labelLarge!.apply(color: TColors.black),)
-                  ),
-                ),*/
                   Positioned(
                       top: 0,
                       right: 0,
@@ -63,7 +48,6 @@ class ProductCardVertical extends StatelessWidget {
             const SizedBox(
               height: TSizes.spaceBtwItems / 2,
             ),
-
             const Padding(
               padding: EdgeInsets.only(left: TSizes.sm),
               child: Column(
@@ -83,8 +67,6 @@ class ProductCardVertical extends StatelessWidget {
                 ],
               ),
             ),
-            // const Spacer(),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -116,50 +98,3 @@ class ProductCardVertical extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-/*class Product {
-  String name;
-  double price;
-  String imageUrl;
-
-  Product({required this.name, required this.price, required this.imageUrl});
-
-  // Convertir le produit en un document Firestore
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'price': price,
-      'imageUrl': imageUrl,
-    };
-  }
-}
-
-// Ajouter un produit à Firestore
-FirebaseFirestore.instance.collection('products').add(product.toMap());
-
-// Récupérer les produits de Firestore et les afficher
-StreamBuilder<QuerySnapshot>(
-  stream: FirebaseFirestore.instance.collection('products').snapshots(),
-  builder: (context, snapshot) {
-    if (!snapshot.hasData) return CircularProgressIndicator();
-    return ListView.builder(
-      itemCount: snapshot.data!.docs.length,
-      itemBuilder: (context, index) {
-        DocumentSnapshot data = snapshot.data!.docs[index];
-        Product product = Product(
-          name: data['name'],
-          price: data['price'],
-          imageUrl: data['imageUrl'],
-        );
-        return ProductCardVertical(product: product);
-      },
-    );
-  },
-);
-*/

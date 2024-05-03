@@ -17,7 +17,8 @@ class TTextFormFieldTheme {
     hintStyle: const TextStyle().copyWith(
         fontSize: TSizes.fontSizeSm,
         color: const Color.fromARGB(255, 255, 255, 255)),
-    errorStyle: const TextStyle().copyWith(fontStyle: FontStyle.normal),
+    errorStyle: const TextStyle()
+        .copyWith(fontStyle: FontStyle.normal, color: Colors.red[400]),
     floatingLabelStyle: const TextStyle().copyWith(
         color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.8)),
     border: const OutlineInputBorder().copyWith(

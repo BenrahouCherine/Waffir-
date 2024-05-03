@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,9 @@ class DiscoverVendorsController extends GetxController {
   @override
   void onInit() {
     fetchVendors();
+    ever(vendors, (_) {
+      log("Vendors: ${vendors.length}");
+    });
     super.onInit();
   }
 
@@ -42,6 +47,7 @@ class DiscoverVendorsController extends GetxController {
         UserModel vendor = UserModel.fromQueryDocumentSnapshot(doc);
         vendor.productsCount = await countProducts(vendor.uid);
         vendors.add(vendor);
+        log(vendor.firstName);
       }
     } catch (e) {
       if (kDebugMode) {

@@ -87,20 +87,24 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   },
                   controller: adresseController,
                   keyboardType: TextInputType.streetAddress,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       hintText: "Rue N° 12 ...",
-                      hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                      border: OutlineInputBorder(
+                      hintStyle:
+                          const TextStyle(color: Colors.grey, fontSize: 14),
+                      border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(color: Colors.grey),
                       ),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       prefixIcon: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Icon(Icons.location_on_outlined),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Icon(
+                          Icons.location_on_outlined,
+                          color: Colors.grey[600],
+                        ),
                       )),
                 ),
                 const SizedBox(height: 20),

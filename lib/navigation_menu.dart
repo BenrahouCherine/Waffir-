@@ -7,8 +7,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:waffir/features//Favoris/screens/favoris.dart';
 import 'package:waffir/features/Nos_Vendeurs/Vendeurs/Vendeur.dart';
 import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/nos_vendeurs/screens/discover_vendors.dart';
-import 'package:waffir/features/Profil/Client.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
+import 'package:waffir/features/Profil/profile_screen.dart';
 import 'package:waffir/features/decouvrir/screens/decouvrir.dart';
 import 'package:waffir/features/orders/vendor/screens/vendor_orders_screen.dart';
 import 'package:waffir/utils/constants/colors.dart';
@@ -24,7 +24,14 @@ class NavigationMenu extends StatelessWidget {
       future: profileController.getUser(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const Scaffold(
+            backgroundColor: TColors.primary,
+            body: Center(
+              child: CircularProgressIndicator(
+                color: Colors.yellow,
+              ),
+            ),
+          );
         } else {
           return Obx(() {
             return profileController.userLoading.value
@@ -95,7 +102,7 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
   final sellerScreens = [const VendorOrdersScreen(), Vend(), const Client()];
   final bayerScreens = [
-    DecScreen(),
+    const DecScreen(),
     const DiscoverVendorsScreen(),
     const favoris(),
     const Client()

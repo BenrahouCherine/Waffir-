@@ -19,7 +19,10 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> {
     return Scaffold(
       backgroundColor: TColors.primary,
       appBar: AppBar(
-        title: const Text('Commandes'),
+        title: const Text(
+          'Commandes',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Obx(() {
         return buyerOrdersController.isLoading.value
