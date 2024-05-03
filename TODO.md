@@ -24,3 +24,4 @@
 - [ ] email validation
 - [ ] create account
 - [ ] keeping same account when login
+- [ ] my products for seller in light mode phones
