@@ -1,17 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:waffir/model/firebase_service.dart';
+import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/image_strings.dart';
 import 'package:waffir/utils/constants/sizes.dart';
 import 'package:waffir/utils/constants/text_strings.dart';
-
-import 'verify_email.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -28,8 +22,9 @@ class _CreateAccountState extends State<SignupScreen> {
   final TextEditingController _lastController = TextEditingController();
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final FirebaseAuthService _auth = FirebaseAuthService();
   bool _hidden = false;
+
+  final authController = Get.find<ProfileController>();
 
   @override
   void dispose() {
@@ -197,8 +192,15 @@ class _CreateAccountState extends State<SignupScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            _signUp();
+                          onPressed: () async {
+                            await authController.signUp(
+                                firstName: _firstController.text,
+                                lastName: _lastController.text,
+                                username: _userController.text,
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                                phone: _phoneController.text,
+                                groupValue: groupValue);
                           },
                           child: const Text('Create Account'),
                         ),
@@ -252,39 +254,5 @@ class _CreateAccountState extends State<SignupScreen> {
             ),
           ),
         ));
-  }
-
-  Future _signUp() async {
-    String firstname = _firstController.text;
-    String lastname = _lastController.text;
-    String username = _userController.text;
-    String password = _passwordController.text;
-    String email = _emailController.text;
-    String phone = _phoneController.text;
-    bool verification = false;
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
-    if (user != null) {
-      print(' user succesfully added');
-      Map<String, dynamic> userDetail = {
-        'uid': user.uid,
-        'username': username,
-        'firstname': firstname,
-        'lastname': lastname,
-        'phone': phone,
-        'isvalidated': verification.toString(),
-        'userNature': groupValue,
-      };
-      CollectionReference collectionReference =
-          FirebaseFirestore.instance.collection('userDetail');
-      collectionReference.doc(username).set(userDetail);
-      print(collectionReference);
-      print(userDetail);
-      FirebaseAuth.instance.currentUser!.sendEmailVerification();
-      Fluttertoast.showToast(msg: "User is successfully created");
-      Get.offAll(() => VerifyEmailScreen());
-    } else {
-      Fluttertoast.showToast(msg: "Some error happend");
-      //var future = Get.to(()=> const VerifyEmailScreen();
-    }
   }
 }

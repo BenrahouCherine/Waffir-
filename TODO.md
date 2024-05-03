@@ -24,9 +24,7 @@
 - [x] remember me
 - [x] modify user not working
 - [x] dark theme issues
-- [ ] email validation
-- [ ] buyer account infos not showing
-- [ ] create account
-- [ ] keeping same account when login
-- [ ] filtrer par category
-- [ ] geolocalisation pour afficher les vendeurs
+- [x] keeping same account when login
+- [x] filtrer par category
+- [x] email validation
+- [x] geolocalisation pour afficher les vendeurs

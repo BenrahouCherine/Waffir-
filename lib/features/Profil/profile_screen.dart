@@ -1,21 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:waffir/common/widgets/appbar/app_bar.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/utils/constants/colors.dart';
-
-class ProfileCompletionCard {
-  final String title;
-  final String buttonText;
-  final IconData icon;
-  ProfileCompletionCard({
-    required this.title,
-    required this.buttonText,
-    required this.icon,
-  });
-}
 
 class Client extends StatefulWidget {
   const Client({super.key});
@@ -51,13 +39,7 @@ class _ClientState extends State<Client> {
             Column(
               children: [
                 profileController.userLoading.value
-                    ? Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: const CircleAvatar(
-                            radius: 50,
-                            backgroundImage: NetworkImage(
-                                'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')))
+                    ? const CircularProgressIndicator(color: Colors.yellow)
                     : CircleAvatar(
                         radius: 50,
                         backgroundImage: profileController

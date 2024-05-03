@@ -48,7 +48,7 @@ class _EntryPageState extends State<EntryPage> {
                   () => Get.offAll(() => const OnBoardingScreen()));
             }
           } else {
-            profileController.getUser();
+            profileController.getUser(_auth.currentUser!.uid);
             Future.microtask(() => Get.offAll(() => NavigationMenu()));
           }
         }

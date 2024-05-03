@@ -6,6 +6,7 @@ import 'package:waffir/common/widgets/custom_shapes/curved_edges/curved_edges.da
 import 'package:waffir/common/widgets/layouts/grid_layout.dart';
 import 'package:waffir/common/widgets/products/vertical_product_card_view.dart';
 import 'package:waffir/common/widgets/texts/section_heading.dart';
+import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/features/addProduct/screens/AddProduct.dart';
 import 'package:waffir/features/decouvrir/controllers/decouvrir_controller.dart';
 import 'package:waffir/features/decouvrir/screens/search_component.dart';
@@ -22,6 +23,8 @@ class DecScreen extends StatefulWidget {
 
 class _DecScreenState extends State<DecScreen> {
   final decouvrirController = Get.put(DecouvrirController());
+  final profileController = Get.find<ProfileController>();
+
   String searchQuery = "";
 
   @override
@@ -84,13 +87,12 @@ class _DecScreenState extends State<DecScreen> {
           padding: const EdgeInsets.all(TSizes.defaultSpace),
           child: Column(
             children: [
-              TSectionHeading(
+              const TSectionHeading(
                 title: 'Produits à découvrir',
-                onPressed: () {},
                 buttonTextColor: TColors.dark,
               ),
               const SizedBox(
-                height: TSizes.spaceBtwSections / 3,
+                height: TSizes.spaceBtwSections / 2,
               ),
               SearchComponent(
                 onChanged: (value) {
@@ -100,6 +102,39 @@ class _DecScreenState extends State<DecScreen> {
                 },
                 padding: EdgeInsets.zero,
               ),
+
+              const SizedBox(
+                height: TSizes.spaceBtwSections / 2,
+              ),
+              // filter by categorie
+              Obx(() => Wrap(
+                    spacing: 8.0,
+                    runSpacing: 4.0,
+                    children: <String>[
+                      'Tout',
+                      'Gateau',
+                      'Boulangerie',
+                      'Plat',
+                    ].map<Widget>((String value) {
+                      return ChoiceChip(
+                        backgroundColor: Colors.orange[400],
+                        label: Text(
+                          value,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        elevation: 0,
+                        side: BorderSide.none,
+                        selected:
+                            decouvrirController.filterCategory.value == value,
+                        selectedColor: Colors.orange[600],
+                        showCheckmark: true,
+                        onSelected: (bool selected) {
+                          decouvrirController.filterCategory.value =
+                              selected ? value : 'Tout';
+                        },
+                      );
+                    }).toList(),
+                  )),
               const SizedBox(
                 height: TSizes.spaceBtwSections / 2,
               ),

@@ -32,6 +32,9 @@ dependencies:
   google_sign_in: ^6.2.1
   dzair_data_usage: ^1.0.1
   confetti: ^0.7.0
+  geolocator: ^11.0.0
+  geocoding: ^3.0.0
+  google_maps_flutter: ^2.6.0
 
 flutter_native_splash:
   color: "#0B622E"

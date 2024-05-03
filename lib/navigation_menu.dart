@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
@@ -10,6 +11,7 @@ import 'package:waffir/features/Nos_Vendeurs/screens/decouvrir/nos_vendeurs/scre
 import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/features/Profil/profile_screen.dart';
 import 'package:waffir/features/decouvrir/screens/decouvrir.dart';
+import 'package:waffir/features/map/screens/map.dart';
 import 'package:waffir/features/orders/vendor/screens/vendor_orders_screen.dart';
 import 'package:waffir/utils/constants/colors.dart';
 
@@ -17,11 +19,12 @@ class NavigationMenu extends StatelessWidget {
   NavigationMenu({super.key});
   final controller = Get.put(NavigationController());
   final profileController = Get.put(ProfileController());
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: profileController.getUser(),
+      future: profileController.getUser(auth.currentUser!.uid),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
@@ -76,6 +79,8 @@ class NavigationMenu extends StatelessWidget {
                                       icon: Icon(Iconsax.discover),
                                       label: 'Découvrir'),
                                   NavigationDestination(
+                                      icon: Icon(Iconsax.map), label: 'Carte'),
+                                  NavigationDestination(
                                       icon: Icon(Iconsax.bag),
                                       label: 'Vendeurs'),
                                   NavigationDestination(
@@ -103,6 +108,7 @@ class NavigationController extends GetxController {
   final sellerScreens = [const VendorOrdersScreen(), Vend(), const Client()];
   final bayerScreens = [
     const DecScreen(),
+    const MapSample(),
     const DiscoverVendorsScreen(),
     const favoris(),
     const Client()

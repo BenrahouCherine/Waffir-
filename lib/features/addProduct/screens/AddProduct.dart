@@ -49,7 +49,10 @@ class _AddProductState extends State<AddProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Ajouter un produit"),
+        title: const Text(
+          "Ajouter un produit",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       backgroundColor: TColors.primary,
       body: SingleChildScrollView(
@@ -63,6 +66,7 @@ class _AddProductState extends State<AddProduct> {
                 child: Column(
                   children: [
                     DropdownButton<String>(
+                      dropdownColor: Colors.black,
                       isExpanded: true,
                       value: _chosenCategory,
                       items: <String>[
@@ -82,6 +86,7 @@ class _AddProductState extends State<AddProduct> {
                       },
                       hint: const Text(
                         "Choisissez une categorie",
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                     const SizedBox(height: 14),

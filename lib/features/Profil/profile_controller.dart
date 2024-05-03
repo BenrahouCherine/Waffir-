@@ -13,6 +13,8 @@ import 'package:waffir/features/Profil/ModifyUserScreen.dart';
 import 'package:waffir/features/Profil/models/user.dart';
 import 'package:waffir/features/authentification/screens/login/login.dart';
 import 'package:waffir/features/authentification/screens/password_configuration/reset_password.dart';
+import 'package:waffir/features/authentification/screens/signup.widgets/verify_email.dart';
+import 'package:waffir/features/map/services/geolocation_service.dart';
 import 'package:waffir/features/orders/client/screens/buyer_orders_screen.dart';
 import 'package:waffir/navigation_menu.dart';
 
@@ -31,6 +33,28 @@ class ProfileController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseStorage storage = FirebaseStorage.instance;
+  GeoLocationService geoLocationService = Get.find<GeoLocationService>();
+
+  @override
+  void onInit() {
+    auth.authStateChanges().listen((User? usr) {
+      if (usr != null) {
+        getUser(usr.uid);
+      } else {
+        user.value = UserModel(
+          uid: '',
+          username: '',
+          firstName: '',
+          lastName: '',
+          userNature: '',
+          phone: '',
+        );
+      }
+    });
+    ever(user, (_) => log(user.value.firstName));
+
+    super.onInit();
+  }
 
   @override
   void onClose() {
@@ -46,13 +70,80 @@ class ProfileController extends GetxController {
     super.onClose();
   }
 
+  Future getUser(String uid) async {
+    try {
+      userLoading.value = true;
+
+      CollectionReference users = firestore.collection('userDetail');
+      await users
+          .where('uid', isEqualTo: uid)
+          .get()
+          .then((QuerySnapshot snapshot) async {
+        if (snapshot.docs.isNotEmpty) {
+          var doc = snapshot.docs.first;
+          await doc.reference
+              .update({'location': geoLocationService.locationData});
+          user.value = UserModel.fromQueryDocumentSnapshot(doc);
+          update();
+        }
+      });
+    } catch (e) {
+      log("Failed to fetch users: $e");
+    } finally {
+      userLoading.value = false;
+    }
+  }
+
+  Future signUp(
+      {required String firstName,
+      required String lastName,
+      required String username,
+      required String email,
+      required String password,
+      required String phone,
+      required String groupValue}) async {
+    bool verification = false;
+
+    UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    String uid = userCredential.user!.uid;
+
+    Map<String, dynamic> userDetail = {
+      'uid': uid,
+      'username': username,
+      'firstname': firstName,
+      'lastname': lastName,
+      'phone': phone,
+      'isvalidated': verification.toString(),
+      'userNature': groupValue,
+      'photo_URL':
+          'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
+      'location': geoLocationService.locationData,
+    };
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('userDetail');
+    collectionReference.doc(username).set(userDetail);
+    print(collectionReference);
+    print(userDetail);
+    FirebaseAuth.instance.currentUser!.sendEmailVerification();
+    //  snack
+    Get.snackbar(
+      'Success',
+      'Account created successfully. Please verify your email.',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+      icon: const Icon(Icons.check_circle_outline_rounded, color: Colors.white),
+    );
+    Get.offAll(() => const VerifyEmailScreen());
+  }
+
   Future signIn(String email, String password) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
-      getUser();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.offAll(() => NavigationMenu());
-      });
+
+      await getUser(auth.currentUser!.uid);
+      Get.offAll(() => NavigationMenu());
     } catch (e) {
       log(e.toString());
       Get.snackbar(
@@ -63,28 +154,6 @@ class ProfileController extends GetxController {
         colorText: Colors.white,
         icon: const Icon(Icons.error_outline_rounded, color: Colors.white),
       );
-    }
-  }
-
-  Future getUser() async {
-    try {
-      userLoading.value = true;
-      final currentUser = auth.currentUser;
-      CollectionReference users = firestore.collection('userDetail');
-      await users
-          .where('uid', isEqualTo: currentUser?.uid.toString())
-          .get()
-          .then((QuerySnapshot snapshot) {
-        if (snapshot.docs.isNotEmpty) {
-          var doc = snapshot.docs.first;
-          user.value = UserModel.fromQueryDocumentSnapshot(doc);
-          update();
-        }
-      });
-    } catch (e) {
-      log("Failed to fetch users: $e");
-    } finally {
-      userLoading.value = false;
     }
   }
 
@@ -108,7 +177,7 @@ class ProfileController extends GetxController {
         var doc = snapshot.docs.first;
         doc.reference.update({'photo_URL': photoURL});
       }
-      getUser();
+      getUser(currentUser!.uid);
       userLoading.value = false;
     }).catchError((error) => log("Failed to fetch users: $error"));
   }
@@ -148,6 +217,51 @@ class ProfileController extends GetxController {
       Get.snackbar(
         'Error',
         'Failed to send password reset email. Please check your email.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        icon: const Icon(Icons.error_outline_rounded, color: Colors.white),
+      );
+    }
+  }
+
+  Future verifyEmail() async {
+    try {
+      User? usr = auth.currentUser;
+      if (usr != null && !usr.emailVerified) {
+        await usr.sendEmailVerification();
+        Get.snackbar(
+          'Success',
+          'Verification email sent. Please check your email.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          icon: const Icon(Icons.check_circle_outline_rounded,
+              color: Colors.white),
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to send verification email. Please try again.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        icon: const Icon(Icons.error_outline_rounded, color: Colors.white),
+      );
+    }
+  }
+
+  Future resendEmailVerification() async {
+    try {
+      User? usr = auth.currentUser;
+      if (usr?.emailVerified == false) {
+        await usr?.sendEmailVerification();
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to send verification email. Please try again.',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
