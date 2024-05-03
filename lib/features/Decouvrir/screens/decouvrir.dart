@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -92,7 +93,33 @@ class _DecScreenState extends State<DecScreen> {
                 buttonTextColor: TColors.dark,
               ),
               const SizedBox(
-                height: TSizes.spaceBtwSections / 2,
+                height: TSizes.spaceBtwItems * 1.5,
+              ),
+              Obx(() => CarouselSlider(
+                    options: CarouselOptions(
+                      aspectRatio: 2.0,
+                      enlargeCenterPage: true,
+                      scrollDirection: Axis.horizontal,
+                      autoPlay: true,
+                    ),
+                    items: decouvrirController.products.map((product) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child:
+                                  Image.network(product.img, fit: BoxFit.cover),
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  )),
+              const SizedBox(
+                height: TSizes.spaceBtwSections / 3,
               ),
               SearchComponent(
                 onChanged: (value) {

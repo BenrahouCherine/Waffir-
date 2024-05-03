@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waffir/common/widgets/appbar/app_bar.dart';
@@ -38,6 +39,32 @@ class _DiscoverVendorsScreenState extends State<DiscoverVendorsScreen> {
             children: [
               const SizedBox(
                 height: TSizes.spaceBtwItems,
+              ),
+              Obx(() => CarouselSlider(
+                    options: CarouselOptions(
+                      aspectRatio: 2.0,
+                      enlargeCenterPage: true,
+                      scrollDirection: Axis.horizontal,
+                      autoPlay: true,
+                    ),
+                    items: controller.vendors.map((vendor) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.network(vendor.photoURL!,
+                                  fit: BoxFit.cover),
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  )),
+              const SizedBox(
+                height: TSizes.spaceBtwItems * 1.5,
               ),
               SearchContainer(
                 onChanged: (value) {
