@@ -11,8 +11,8 @@ class AppBindings extends Bindings {
   void dependencies() {
     Get.put(GeoLocationService(), permanent: true);
     Get.put(ProfileController(), permanent: true);
-    Get.put(DiscoverVendorsController(), permanent: true);
-    Get.lazyPut(() => MapController());
+    Get.put(DiscoverVendorsController());
+    Get.put(MapController());
     Get.lazyPut(() => CartController(), fenix: true);
     Get.lazyPut(() => FavController(), fenix: true);
   }

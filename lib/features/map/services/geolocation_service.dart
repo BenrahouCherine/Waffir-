@@ -33,21 +33,21 @@ class GeoLocationService extends GetxService {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // await Geolocator.openLocationSettings();
-      return Future.error('Location services are disabled.');
+      await Geolocator.openLocationSettings();
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      Get.snackbar(
+        'Location Permission',
+        'Location permissions are permanently denied, we cannot request permissions.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      await Geolocator.openAppSettings();
     }
 
     Position position = await Geolocator.getCurrentPosition();
