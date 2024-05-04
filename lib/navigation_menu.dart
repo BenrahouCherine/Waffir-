@@ -17,8 +17,8 @@ import 'package:waffir/utils/constants/colors.dart';
 
 class NavigationMenu extends StatelessWidget {
   NavigationMenu({super.key});
-  final controller = Get.put(NavigationController());
-  final profileController = Get.put(ProfileController());
+  final controller = Get.find<NavigationController>();
+  final profileController = Get.find<ProfileController>();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override

@@ -12,7 +12,13 @@ class VendorOrdersScreen extends StatefulWidget {
 }
 
 class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
-  final vendorOrdersController = Get.put(VendorOrdersController());
+  final vendorOrdersController = Get.find<VendorOrdersController>();
+  @override
+  void initState() {
+    vendorOrdersController.fetchVendorOrders();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,22 +34,18 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
             ? const Center(child: CircularProgressIndicator())
             : Container(
                 padding: const EdgeInsets.all(8.0),
-                child: vendorOrdersController.vendorOrders.isEmpty
-                    ? const Center(
-                        child: Text("Pas de commandes pour l'instant"),
-                      )
-                    : ListView.separated(
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 10,
-                        ),
-                        itemCount: vendorOrdersController.vendorOrders.length,
-                        itemBuilder: (context, index) {
-                          return OrderCard(
-                            isSeller: true,
-                            order: vendorOrdersController.vendorOrders[index],
-                          );
-                        },
-                      ),
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 10,
+                  ),
+                  itemCount: vendorOrdersController.vendorOrders.length,
+                  itemBuilder: (context, index) {
+                    return OrderCard(
+                      isSeller: true,
+                      order: vendorOrdersController.vendorOrders[index],
+                    );
+                  },
+                ),
               );
       }),
     );

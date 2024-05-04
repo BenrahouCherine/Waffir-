@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,114 +34,126 @@ class _ClientState extends State<Client> {
             )
           ]),
       body: Obx(() {
-        return ListView(
-          padding: const EdgeInsets.all(10),
-          children: [
-            // COLUMN THAT WILL CONTAIN THE PROFILE
-            Column(
-              children: [
-                profileController.userLoading.value
-                    ? const CircularProgressIndicator(color: Colors.yellow)
-                    : ValueListenableBuilder(
-                        valueListenable: profileController.isUploading,
-                        builder: (context, isUploading, child) {
-                          if (isUploading) {
-                            return const CircularProgressIndicator(
-                                color: Colors.yellow);
-                          } else {
-                            return CircleAvatar(
-                              radius: 50,
-                              backgroundImage: profileController
-                                          .user.value.photoURL !=
-                                      ''
-                                  ? NetworkImage(profileController
-                                          .user.value.photoURL ??
+        if (profileController.userLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(color: Colors.yellow),
+          );
+        } else {
+          return ListView(
+            padding: const EdgeInsets.all(10),
+            children: [
+              // COLUMN THAT WILL CONTAIN THE PROFILE
+              Column(
+                children: [
+                  profileController.userLoading.value
+                      ? const CircularProgressIndicator(color: Colors.yellow)
+                      : CircleAvatar(
+                          radius: 50,
+                          backgroundImage: profileController
+                                      .user.value.photoURL !=
+                                  ''
+                              ? NetworkImage(profileController
+                                      .user.value.photoURL ??
+                                  'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
+                              : const NetworkImage(
                                       'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
-                                  : const NetworkImage(
-                                          'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
-                                      as ImageProvider,
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.image_rounded),
-                                  onPressed: () async {
-                                    final XFile? image = await _picker
-                                        .pickImage(source: ImageSource.gallery);
-                                    if (image != null) {
-                                      profileController.profilePicture.value =
-                                          XFile(image.path);
-                                    }
-                                  },
-                                ),
+                                  as ImageProvider,
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.7),
+                                shape: BoxShape.circle,
                               ),
-                            );
-                          }
-                        }),
-                const SizedBox(height: 40),
-                Text(
-                  'Welcome ${profileController.user.value.firstName} ${profileController.user.value.lastName}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 40),
-                Text(
-                  'Account type: ${profileController.user.value.userNature}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 40),
-            const SizedBox(height: 75),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: Card(
-                elevation: 4,
-                shadowColor: Colors.black12,
-                child: ListTile(
-                  leading: const Icon(Icons.edit_outlined),
-                  title: const Text("Modify account"),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () => profileController.modifyTaped(),
-                ),
-              ),
-            ),
-            profileController.user.value.userNature == 'Buyer'
-                ? Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: Card(
-                      elevation: 4,
-                      shadowColor: Colors.black12,
-                      child: ListTile(
-                        leading: const Icon(Icons.delivery_dining_outlined),
-                        title: const Text("Orders"),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () => profileController.ordersTaped(),
-                      ),
+                              child: IconButton(
+                                icon: const Icon(Icons.image_rounded),
+                                onPressed: () async {
+                                  try {
+                                    final XFile? image =
+                                        await _picker.pickImage(
+                                      source: ImageSource.gallery,
+                                      imageQuality: 70,
+                                      maxHeight: 512,
+                                      maxWidth: 512,
+                                    );
+                                    if (image != null) {
+                                      profileController.profilePicturePath
+                                          .value = image.path;
+                                    }
+                                  } catch (e) {
+                                    log(e.toString());
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                  const SizedBox(height: 40),
+                  Text(
+                    'Welcome ${profileController.user.value.firstName} ${profileController.user.value.lastName}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                  )
-                : Container(),
+                  ),
+                  const SizedBox(height: 40),
+                  Text(
+                    'Account type: ${profileController.user.value.userNature}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
 
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: Card(
-                elevation: 4,
-                shadowColor: Colors.black12,
-                child: ListTile(
-                  leading: const Icon(Icons.logout_outlined),
-                  title: const Text("Log out"),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () async => await profileController.signOut(),
+              const SizedBox(height: 40),
+              const SizedBox(height: 75),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Card(
+                  elevation: 4,
+                  shadowColor: Colors.black12,
+                  child: ListTile(
+                    leading: const Icon(Icons.edit_outlined),
+                    title: const Text("Modify account"),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => profileController.modifyTaped(),
+                  ),
                 ),
               ),
-            ),
-          ],
-        );
+              profileController.user.value.userNature == 'Buyer'
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: Card(
+                        elevation: 4,
+                        shadowColor: Colors.black12,
+                        child: ListTile(
+                          leading: const Icon(Icons.delivery_dining_outlined),
+                          title: const Text("Orders"),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () => profileController.ordersTaped(),
+                        ),
+                      ),
+                    )
+                  : Container(),
+
+              Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Card(
+                  elevation: 4,
+                  shadowColor: Colors.black12,
+                  child: ListTile(
+                    leading: const Icon(Icons.logout_outlined),
+                    title: const Text("Log out"),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () async => await profileController.signOut(),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
       }),
     );
   }

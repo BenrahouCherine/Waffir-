@@ -23,8 +23,14 @@ class DecScreen extends StatefulWidget {
 }
 
 class _DecScreenState extends State<DecScreen> {
-  final decouvrirController = Get.put(DecouvrirController());
+  final decouvrirController = Get.find<DecouvrirController>();
   final profileController = Get.find<ProfileController>();
+
+  @override
+  void initState() {
+    decouvrirController.fetchProducts();
+    super.initState();
+  }
 
   String searchQuery = "";
 
@@ -85,106 +91,126 @@ class _DecScreenState extends State<DecScreen> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(TSizes.defaultSpace),
-          child: Column(
-            children: [
-              const TSectionHeading(
-                title: 'Produits à découvrir',
-                buttonTextColor: TColors.dark,
-              ),
-              const SizedBox(
-                height: TSizes.spaceBtwItems * 1.5,
-              ),
-              Obx(() => CarouselSlider(
-                    options: CarouselOptions(
-                      aspectRatio: 2.0,
-                      enlargeCenterPage: true,
-                      scrollDirection: Axis.horizontal,
-                      autoPlay: true,
-                    ),
-                    items: decouvrirController.products.map((product) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child:
-                                  Image.network(product.img, fit: BoxFit.cover),
+            padding: const EdgeInsets.all(TSizes.defaultSpace),
+            child: Obx(
+              () => decouvrirController.isLoading.value
+                  ? SizedBox(
+                      height: MediaQuery.of(context).size.height / 1.5,
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.yellow,
                             ),
-                          );
-                        },
-                      );
-                    }).toList(),
-                  )),
-              const SizedBox(
-                height: TSizes.spaceBtwSections / 3,
-              ),
-              SearchComponent(
-                onChanged: (value) {
-                  setState(() {
-                    searchQuery = value;
-                  });
-                },
-                padding: EdgeInsets.zero,
-              ),
-
-              const SizedBox(
-                height: TSizes.spaceBtwSections / 2,
-              ),
-              // filter by categorie
-              Obx(() => Wrap(
-                    spacing: 8.0,
-                    runSpacing: 4.0,
-                    children: <String>[
-                      'Tout',
-                      'Gateau',
-                      'Boulangerie',
-                      'Plat',
-                    ].map<Widget>((String value) {
-                      return ChoiceChip(
-                        backgroundColor: Colors.orange[400],
-                        label: Text(
-                          value,
-                          style: const TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        const TSectionHeading(
+                          title: 'Produits à découvrir',
+                          buttonTextColor: TColors.dark,
                         ),
-                        elevation: 0,
-                        side: BorderSide.none,
-                        selected:
-                            decouvrirController.filterCategory.value == value,
-                        selectedColor: Colors.orange[600],
-                        showCheckmark: true,
-                        onSelected: (bool selected) {
-                          decouvrirController.filterCategory.value =
-                              selected ? value : 'Tout';
-                        },
-                      );
-                    }).toList(),
-                  )),
-              const SizedBox(
-                height: TSizes.spaceBtwSections / 2,
-              ),
-              Obx(() {
-                final filteredProducts = decouvrirController.products
-                    .where((product) => product.name
-                        .toUpperCase()
-                        .contains(searchQuery.toUpperCase()))
-                    .toList();
+                        const SizedBox(
+                          height: TSizes.spaceBtwItems * 1.5,
+                        ),
+                        Obx(() => CarouselSlider(
+                              options: CarouselOptions(
+                                aspectRatio: 2.0,
+                                enlargeCenterPage: true,
+                                scrollDirection: Axis.horizontal,
+                                autoPlay: true,
+                              ),
+                              items:
+                                  decouvrirController.products.map((product) {
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 5.0),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: Image.network(product.img,
+                                            fit: BoxFit.cover),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }).toList(),
+                            )),
+                        const SizedBox(
+                          height: TSizes.spaceBtwSections / 3,
+                        ),
+                        SearchComponent(
+                          onChanged: (value) {
+                            setState(() {
+                              searchQuery = value;
+                            });
+                          },
+                          padding: EdgeInsets.zero,
+                        ),
 
-                return GridViewVertical(
-                  itemCount: filteredProducts.length,
-                  itemBuilder: (_, index) {
-                    return VerticalProductCardView(
-                      product: filteredProducts[index],
-                    );
-                  },
-                );
-              }),
+                        const SizedBox(
+                          height: TSizes.spaceBtwSections / 2,
+                        ),
+                        // filter by categorie
+                        Obx(() => Wrap(
+                              spacing: 8.0,
+                              runSpacing: 4.0,
+                              children: <String>[
+                                'Tout',
+                                'Gateau',
+                                'Boulangerie',
+                                'Plat',
+                              ].map<Widget>((String value) {
+                                return ChoiceChip(
+                                  backgroundColor: Colors.orange[400],
+                                  label: Text(
+                                    value,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  elevation: 0,
+                                  side: BorderSide.none,
+                                  selected: decouvrirController
+                                          .filterCategory.value ==
+                                      value,
+                                  selectedColor: Colors.orange[600],
+                                  showCheckmark: true,
+                                  onSelected: (bool selected) {
+                                    decouvrirController.filterCategory.value =
+                                        selected ? value : 'Tout';
+                                  },
+                                );
+                              }).toList(),
+                            )),
+                        const SizedBox(
+                          height: TSizes.spaceBtwSections / 2,
+                        ),
+                        Obx(() {
+                          final filteredProducts = decouvrirController.products
+                              .where((product) => product.name
+                                  .toUpperCase()
+                                  .contains(searchQuery.toUpperCase()))
+                              .toList();
+
+                          return GridViewVertical(
+                            itemCount: filteredProducts.length,
+                            itemBuilder: (_, index) {
+                              return VerticalProductCardView(
+                                product: filteredProducts[index],
+                              );
+                            },
+                          );
+                        }),
 //const ProductCardVertical()
-            ],
-          ),
-        )
+                      ],
+                    ),
+            ))
       ],
     )));
   }

@@ -6,8 +6,6 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:waffir/common/widgets/image_text_widget/roundImage.dart';
 import 'package:waffir/features/decouvrir/controllers/decouvrir_controller.dart';
-import 'package:waffir/features/decouvrir/screens/decouvrir.dart';
-import 'package:waffir/utils/constants/colors.dart';
 import 'package:waffir/utils/constants/sizes.dart';
 
 class promoslider extends StatelessWidget {
@@ -38,15 +36,14 @@ class promoslider extends StatelessWidget {
             () => Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                for (int i = 0; i < banners.length; i++)
-                  CircularContainer(
-                    width: 20,
-                    height: 4,
-                    backgroundColor: controller.carouselCurrentIndex.value == i
-                        ? TColors.primary
-                        : TColors.primary.withOpacity(0.3),
-                    margin: const EdgeInsets.only(right: 10),
-                  ),
+                // CircularContainer(
+                //   width: 20,
+                //   height: 4,
+                //   backgroundColor: controller.carouselCurrentIndex.value == i
+                //       ? TColors.primary
+                //       : TColors.primary.withOpacity(0.3),
+                //   margin: const EdgeInsets.only(right: 10),
+                // ),
               ],
             ),
           ),
