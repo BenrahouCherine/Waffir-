@@ -69,6 +69,7 @@ class _ClientState extends State<Client> {
                                 icon: const Icon(Icons.image_rounded),
                                 onPressed: () async {
                                   try {
+                                    profileController.userLoading.value = true;
                                     final XFile? image =
                                         await _picker.pickImage(
                                       source: ImageSource.gallery,
@@ -79,9 +80,15 @@ class _ClientState extends State<Client> {
                                     if (image != null) {
                                       profileController.profilePicturePath
                                           .value = image.path;
+                                      profileController.userLoading.value =
+                                          false;
                                     }
                                   } catch (e) {
+                                    profileController.userLoading.value = false;
+
                                     log(e.toString());
+                                  } finally {
+                                    profileController.userLoading.value = false;
                                   }
                                 },
                               ),

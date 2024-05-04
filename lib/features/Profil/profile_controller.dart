@@ -209,6 +209,15 @@ class ProfileController extends GetxController {
         getUser(currentUser!.uid);
         profilePicturePath.value = "";
       });
+      Get.snackbar(
+        'Success',
+        'Profile picture updated successfully.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        icon:
+            const Icon(Icons.check_circle_outline_rounded, color: Colors.white),
+      );
     } catch (e) {
       log(e.toString());
     } finally {
