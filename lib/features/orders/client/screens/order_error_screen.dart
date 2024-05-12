@@ -12,6 +12,7 @@ class _OrderErrorScreenState extends State<OrderErrorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,25 +26,28 @@ class _OrderErrorScreenState extends State<OrderErrorScreen> {
             const SizedBox(
               height: 10,
             ),
-            const Center(
+            Center(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Une erreur s\'est produite lors de la passation de la commande!',
+                  const Text(
+                    'Une erreur s\'est produite!',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 17,
                       fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                   ),
-                  SizedBox(
-                    height: 2,
+                  const SizedBox(
+                    height: 10,
                   ),
                   Text(
                     'Veuillez réessayer plus tard',
                     style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w400,
-                    ),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black.withOpacity(0.7)),
                   ),
                 ],
               ),

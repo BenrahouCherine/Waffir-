@@ -21,7 +21,6 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   CartController cartController = Get.find<CartController>();
   ProfileController authController = Get.find<ProfileController>();
-  final c = Get.put(OrderController());
   OrderController orderController = Get.find<OrderController>();
 
   TextEditingController adresseController = TextEditingController();

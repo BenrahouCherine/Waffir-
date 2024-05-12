@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:waffir/features/Profil/profile_controller.dart';
 import 'package:waffir/features/cart/controllers/cart_controller.dart';
 import 'package:waffir/features/cart/models/cart_item.dart';
+import 'package:waffir/features/decouvrir/controllers/decouvrir_controller.dart';
 import 'package:waffir/features/orders/client/models/order.dart';
 import 'package:waffir/features/orders/client/models/order_item.dart';
 import 'package:waffir/features/orders/client/screens/order_error_screen.dart';
@@ -17,8 +18,11 @@ import 'package:waffir/features/orders/client/screens/order_success_screen.dart'
 class OrderController extends GetxController {
   CartController cartController = Get.find<CartController>();
   ProfileController authController = Get.find<ProfileController>();
+  DecouvrirController decouvrirController = Get.find<DecouvrirController>();
   RxList<OrderModel> userOrders = <OrderModel>[].obs;
   RxBool isLoading = false.obs;
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void onInit() {
@@ -60,6 +64,18 @@ class OrderController extends GetxController {
                 ))
             .toList();
 
+        // Decrease the quantity of each product
+        for (var item in orderItems) {
+          final docRef = firestore.collection('product').doc(item.product.uid);
+          final doc = await docRef.get();
+          final currentQuantity = int.parse(doc.data()?['quantity'] ?? '0');
+          final newQuantity = currentQuantity - int.parse(item.quantity);
+
+          if (newQuantity >= 0) {
+            await docRef.update({'quantity': newQuantity.toString()});
+          }
+        }
+
         // Create the order
         OrderModel order = OrderModel(
           buyer_uid: authController.user.value.uid,
@@ -83,6 +99,7 @@ class OrderController extends GetxController {
 
       cartController.cartItems.clear();
       Get.to(() => const OrderSuccessScreen());
+      await decouvrirController.fetchProducts();
     } catch (e) {
       if (kDebugMode) {
         log(e.toString());

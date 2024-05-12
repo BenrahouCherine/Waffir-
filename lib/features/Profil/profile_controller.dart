@@ -56,7 +56,6 @@ class ProfileController extends GetxController {
         );
       }
     });
-    ever(user, (_) => log(user.value.firstName));
 
     super.onInit();
   }

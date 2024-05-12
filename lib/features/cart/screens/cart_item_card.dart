@@ -95,10 +95,16 @@ class CartItemCard extends StatelessWidget {
                     style:
                         const TextStyle(fontSize: 13, color: TColors.primary),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 6),
                   Text(
                     "${cartItem.product.price} DA",
                     style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    "Disponible: ${cartItem.product.quantity}",
+                    style:
+                        const TextStyle(fontSize: 13, color: TColors.primary),
                   ),
                 ],
               ),

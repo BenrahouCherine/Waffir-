@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:waffir/features/addProduct/model/product.dart';
 
 class DecouvrirController extends GetxController {
-  static DecouvrirController get instance => Get.find();
-
   RxList<ProductModel> products = <ProductModel>[].obs;
   final carouselCurrentIndex = 0.obs;
   RxBool isLoading = false.obs;

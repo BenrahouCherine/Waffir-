@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:waffir/features/Profil/models/user.dart';
 
 class ProductModel {
   String? uid;
@@ -10,6 +11,7 @@ class ProductModel {
   String img;
   int price;
   String quantity;
+  UserModel? seller;
 
   ProductModel({
     this.uid,
@@ -21,6 +23,7 @@ class ProductModel {
     required this.img,
     required this.price,
     required this.quantity,
+    this.seller,
   });
 
   factory ProductModel.fromQuerySnapshot(QueryDocumentSnapshot doc) {
@@ -34,22 +37,22 @@ class ProductModel {
       market: data['market'],
       img: data['img'],
       price: int.parse(data['price']),
-      quantity: data['quantity'],
+      quantity: data['quantity'].toString(),
     );
   }
 
-  factory ProductModel.fromJson(Map<String,dynamic> json){
-
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      sellerUid: json['seller_uid'],
-      category: json['category'],
-      name: json['name'],
-      description: json['description'],
-      market: json['market'],
-      img: json['img'],
-      price: int.parse(json['price']),
-      quantity: json['quantity'],
-    );
+        sellerUid: json['seller_uid'],
+        category: json['category'],
+        name: json['name'],
+        description: json['description'],
+        market: json['market'],
+        img: json['img'],
+        price: int.parse(json['price']),
+        quantity: json['quantity'].toString(),
+        seller:
+            json['seller'] == null ? null : UserModel.fromJson(json['seller']));
   }
 
   Map<String, dynamic> toMap() {
@@ -62,7 +65,7 @@ class ProductModel {
       'market': market,
       'img': img,
       'price': price.toString(),
-      'quantity': quantity,
+      'quantity': quantity.toString(),
     };
   }
 

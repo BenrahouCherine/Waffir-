@@ -36,7 +36,6 @@ class _DecScreenState extends State<DecScreen> {
 
   @override
   Widget build(BuildContext context) {
-    fetchUsers();
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(
